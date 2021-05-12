@@ -1,5 +1,7 @@
 package src.main.clases;
 
+import java.util.List;
+
 public class Card {
     private int id;
     private String name;
@@ -9,9 +11,36 @@ public class Card {
     private int price;
     private String description;
     private boolean buy; // to show if the card is sell or not
+    private StatusCardInTurn statusCardInTurn;
+    private Place place;
+    private boolean isHidden;
 
     //constructor
     public Card() {
+    }
+
+    public StatusCardInTurn getStatusCardInTurn() {
+        return statusCardInTurn;
+    }
+
+    public void setStatusCardInTurn(StatusCardInTurn statusCardInTurn) {
+        this.statusCardInTurn = statusCardInTurn;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 
     //get and set
@@ -81,14 +110,21 @@ public class Card {
 
     //methods
     // to show my cards
-    public void showAllCards(){}
+    public void showAllCards(List<Card> cards){
+        for (Card card : cards) {
+                System.out.println(card.getName() + " : " + card.getDescription());
+        }
+    }
 
     // to show the description of one card
-    public void showCard(){}
+    public void showCard(Card card){
+        System.out.println(card.getName());
+        System.out.println(card.getDescription());
+        System.out.println(card.getAttack());
+        System.out.println(card.getDefence());
+        System.out.println(card.getPrice());
+    }
 
-    //
-    public void buyCard(){}
 
-    public void showShowCards(){}
 
 }
