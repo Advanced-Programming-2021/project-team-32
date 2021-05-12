@@ -1,45 +1,49 @@
 package src.main.clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MatchGame {
-    private int id;
-    private int playerStarted;
+    Player player1;
+    Player player2;
 
-    //constructor
-    public MatchGame() {
+    List<Round> roundList = new ArrayList<>();
+
+    public Player getPlayer1() {
+        return player1;
     }
 
-    //get and set
-    public int getId() {
-        return id;
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Player getPlayer2() {
+        return player2;
     }
 
-    public int getPlayerStarted() {
-        return playerStarted;
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
     }
 
-    public void setPlayerStarted(int playerStarted) {
-        this.playerStarted = playerStarted;
+    public List<Round> getRoundList() {
+        return roundList;
     }
 
-    //methods
-    public void startGame(){}
+    public void setRoundList(List<Round> roundList) {
+        this.roundList = roundList;
+    }
 
-    public void ai(){}
+    public MatchGame startOneRound() {
+        MatchGame matchGame = new MatchGame();
+        matchGame.getRoundList().add(new Round());
+        return matchGame;
+    }
 
-    // to increase my money
-    public void increaseMoney(){}
-
-    // to decrease the money of the second player
-    public void decreaseMoney(){}
-
-    // to add force card
-    public void addForceCard(){}
-
-    // to make me the winner
-    public void makeMeWinner(){}
-
+    public MatchGame startThreeRound() {
+        MatchGame matchGame = new MatchGame();
+        matchGame.getRoundList().add(new Round());
+        matchGame.getRoundList().add(new Round());
+        matchGame.getRoundList().add(new Round());
+        return matchGame;
+    }
 }
