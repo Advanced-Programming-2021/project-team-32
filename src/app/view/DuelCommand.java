@@ -1,4 +1,4 @@
-package main.view;
+package app.view;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

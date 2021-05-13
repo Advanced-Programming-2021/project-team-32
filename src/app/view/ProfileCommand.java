@@ -1,12 +1,13 @@
-package main.view;
+package app.view;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum ScoreboardCommand {
+public enum ProfileCommand {
     SHOW_MENU("^menu show-current$"),
-    SHOW("^scoreboard show$");
-
+    CHANGE_NICKNAME("^profile change --nickname (?<nickname>\\S+)$"),
+    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+)))$"),
+    EXIT("^menu exit$");
 
     private Pattern commandPattern;
 
@@ -20,7 +21,7 @@ public enum ScoreboardCommand {
         return this.commandPattern.matcher(input);
     }
 
-    ScoreboardCommand(String commandPatternString) {
+    ProfileCommand(String commandPatternString) {
 
         this.commandPattern = Pattern.compile(commandPatternString);
     }

@@ -1,15 +1,11 @@
-package main.view;
+package app.view;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum ShopCommand {
+public enum ScoreboardCommand {
     SHOW_MENU("^menu show-current$"),
-    BUY_CARD("^shop buy (\\w+)$"),
-    SHOW_SHOP("^shop show --all$"),
-    EXIT("^menu exit$");
-
-
+    SHOW("^scoreboard show$");
 
 
     private Pattern commandPattern;
@@ -24,7 +20,7 @@ public enum ShopCommand {
         return this.commandPattern.matcher(input);
     }
 
-    ShopCommand(String commandPatternString) {
+    ScoreboardCommand(String commandPatternString) {
 
         this.commandPattern = Pattern.compile(commandPatternString);
     }

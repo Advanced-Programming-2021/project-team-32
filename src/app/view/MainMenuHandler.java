@@ -1,20 +1,25 @@
-package main.view;
+package app.view;
+
+import app.Controller;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+public class MainMenuHandler implements MenuHandler {
 
-public enum LoginCommand
-{
+    public MainMenuHandler(String username) {
 
+    }
+
+    @Override
+    public boolean handle(Controller controller) {
+        return false;
+    }
+}
+enum MainCommand {
     SHOW_MENU("^menu show-current$"),
-    CREATE_USER("^user create (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))(?=.*--nickname (?<nickname>\\S+))$"),
-    LOGIN_USER("^user login (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))$"),
+    ENTER_MENU("^menu enter (Login|Main|Duel|Deck|Scoreboard|Profile|ShopCommand)$"),
+    LOGOUT("^user logout$"),
     EXIT("^menu exit$");
-
-
-
-
-
 
     private Pattern commandPattern;
 
@@ -28,7 +33,7 @@ public enum LoginCommand
         return this.commandPattern.matcher(input);
     }
 
-    LoginCommand(String commandPatternString) {
+    MainCommand(String commandPatternString) {
 
         this.commandPattern = Pattern.compile(commandPatternString);
     }
