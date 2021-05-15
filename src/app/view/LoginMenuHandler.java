@@ -9,22 +9,23 @@ public class LoginMenuHandler implements MenuHandler {
 
     @Override
     public boolean handle(Controller controller) {
-        while (true) {
-            String command = UserCommandGetter.getUserCommand();
-            Matcher matcher;
-            if((matcher = LoginCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-                controller.SHOW_MENU();
-            } else if ((matcher = LoginCommand.EXIT.getStringMatcher(command)).find()){
-                return false;
-            } else if ((matcher = LoginCommand.LOGIN_USER.getStringMatcher(command)).find()) {
-                controller.login(matcher.group("username"), matcher.group("password"));
-            }
-        }
+
+        String command = UserCommandGetter.getUserCommand();
+        Matcher matcher;
+        if ((matcher = LoginCommand.SHOW_MENU.getStringMatcher(command)).find()) {
+            controller.showmenu();
+        } else if ((matcher = LoginCommand.EXIT.getStringMatcher(command)).find()) {
+            return false;
+        } else if ((matcher = LoginCommand.LOGIN_USER.getStringMatcher(command)).find()) {
+            controller.login(matcher.group("username"), matcher.group("password"));
+         }
+        else if ((matcher=LoginCommand.CREATE_USER.getStringMatcher(command)).find()){};
+        return true;
     }
 }
 
 
-enum LoginCommand {
+ enum LoginCommand {
     SHOW_MENU("^menu show-current$"),
     CREATE_USER("^user create (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))(?=.*--nickname (?<nickname>\\S+))$"),
     LOGIN_USER("^user login (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))$"),

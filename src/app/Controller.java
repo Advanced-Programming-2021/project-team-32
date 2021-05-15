@@ -14,7 +14,7 @@ public class Controller {
         }
     }
 
-    public void SHOW_MENU() {
+    public void showmenu() {
     }
 
     public void login(String username, String password) {

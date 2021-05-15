@@ -4,29 +4,23 @@ import app.Controller;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public class MainMenuHandler implements MenuHandler {
-
-    public MainMenuHandler(String username) {
-
-    }
+public class ScoreboardMenuHandler implements MenuHandler{
 
     @Override
     public boolean handle(Controller controller) {
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
-        if ((matcher = MainCommand.SHOW_MENU.getStringMatcher(command)).find()) {
+        if ((matcher = ScoreboardCommand.SHOW_MENU.getStringMatcher(command)).find()) {
             controller.showmenu();
         }
-        else if ((matcher=MainCommand.ENTER_MENU.getStringMatcher(command)).find()){}
-        else if((matcher=MainCommand.LOGOUT.getStringMatcher(command)).find()){}
-        else if((matcher=MainCommand.EXIT.getStringMatcher(command)).find()){};
+        else if((matcher=ScoreboardCommand.SHOW.getStringMatcher(command)).find()){}
+        else if ((matcher=ScoreboardCommand.EXIT.getStringMatcher(command)).find()){};
         return false;
     }
 }
-enum MainCommand {
+ enum ScoreboardCommand {
     SHOW_MENU("^menu show-current$"),
-    ENTER_MENU("^menu enter (Login|Main|Duel|Deck|Scoreboard|Profile|ShopCommand)$"),
-    LOGOUT("^user logout$"),
+    SHOW("^scoreboard show$"),
     EXIT("^menu exit$");
 
     private Pattern commandPattern;
@@ -41,7 +35,7 @@ enum MainCommand {
         return this.commandPattern.matcher(input);
     }
 
-    MainCommand(String commandPatternString) {
+    ScoreboardCommand(String commandPatternString) {
 
         this.commandPattern = Pattern.compile(commandPatternString);
     }

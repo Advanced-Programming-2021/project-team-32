@@ -1,0 +1,44 @@
+package app.view;
+
+import app.Controller;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+ public class ProfileMenuHandler implements MenuHandler{
+
+     @Override
+     public boolean handle(Controller controller) {
+         String command = UserCommandGetter.getUserCommand();
+         Matcher matcher;
+         if ((matcher = ProfileCommand.SHOW_MENU.getStringMatcher(command)).find()) {
+             controller.showmenu();
+         }
+         else if((matcher=ProfileCommand.CHANGE_NICKNAME.getStringMatcher(command)).find()){}
+         else if((matcher=ProfileCommand.CHANGE_PASSWORD.getStringMatcher(command)).find()){}
+         else if((matcher=ProfileCommand.EXIT.getStringMatcher(command)).find()){};
+         return false;
+     }
+ }
+ enum ProfileCommand {
+    SHOW_MENU("^menu show-current$"),
+    CHANGE_NICKNAME("^profile change --nickname (?<nickname>\\S+)$"),
+    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+)))$"),
+    EXIT("^menu exit$");
+
+    private Pattern commandPattern;
+
+    public Pattern getCommandPattern() {
+
+        return commandPattern;
+    }
+
+    public Matcher getStringMatcher(String input) {
+
+        return this.commandPattern.matcher(input);
+    }
+
+    ProfileCommand(String commandPatternString) {
+
+        this.commandPattern = Pattern.compile(commandPatternString);
+    }
+}
