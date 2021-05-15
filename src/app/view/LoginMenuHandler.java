@@ -19,7 +19,9 @@ public class LoginMenuHandler implements MenuHandler {
         } else if ((matcher = LoginCommand.LOGIN_USER.getStringMatcher(command)).find()) {
             controller.login(matcher.group("username"), matcher.group("password"));
          }
-        else if ((matcher=LoginCommand.CREATE_USER.getStringMatcher(command)).find()){};
+        else if ((matcher=LoginCommand.CREATE_USER.getStringMatcher(command)).find()){
+            controller.createUser(matcher.group("username"), matcher.group("password"), matcher.group("nickname"));
+        };
         return true;
     }
 }

@@ -14,7 +14,9 @@ import java.util.regex.Pattern;
          if ((matcher = ShopCommand.SHOW_MENU.getStringMatcher(command)).find()) {
              controller.showmenu();
          }
-         else if ((matcher=ShopCommand.BUY_CARD.getStringMatcher(command)).find()){}
+         else if ((matcher=ShopCommand.BUY_CARD.getStringMatcher(command)).find()){
+             controller.buyCard(matcher.group(1));
+         }
          else if((matcher=ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()){}
          else if((matcher=ShopCommand.EXIT.getStringMatcher(command)).find()){};
          return false;

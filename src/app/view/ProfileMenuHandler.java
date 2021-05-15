@@ -13,8 +13,12 @@ import java.util.regex.Pattern;
          if ((matcher = ProfileCommand.SHOW_MENU.getStringMatcher(command)).find()) {
              controller.showmenu();
          }
-         else if((matcher=ProfileCommand.CHANGE_NICKNAME.getStringMatcher(command)).find()){}
-         else if((matcher=ProfileCommand.CHANGE_PASSWORD.getStringMatcher(command)).find()){}
+         else if((matcher=ProfileCommand.CHANGE_NICKNAME.getStringMatcher(command)).find()){
+             controller.changeNickName(matcher.group("nickname"));
+         }
+         else if((matcher=ProfileCommand.CHANGE_PASSWORD.getStringMatcher(command)).find()){
+             controller.changePassword(matcher.group("cp"), matcher.group("password"));
+         }
          else if((matcher=ProfileCommand.EXIT.getStringMatcher(command)).find()){};
          return false;
      }

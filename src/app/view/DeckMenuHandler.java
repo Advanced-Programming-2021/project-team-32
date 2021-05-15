@@ -13,13 +13,25 @@ import java.util.regex.Pattern;
        if ((matcher = DeckCommand.SHOW_MENU.getStringMatcher(command)).find()) {
           controller.showmenu();
        }
-       else if((matcher=DeckCommand.CREATE_DECK.getStringMatcher(command)).find()){}
-       else if((matcher=DeckCommand.DELETE_DECK.getStringMatcher(command)).find()){}
-       else if((matcher=DeckCommand.SET_ACTIVE.getStringMatcher(command)).find()){}
-       else if((matcher=DeckCommand.ADD_CARD.getStringMatcher(command)).find()){}
-       else if((matcher=DeckCommand.REMOVE_CARD.getStringMatcher(command)).find()){}
+       else if((matcher=DeckCommand.CREATE_DECK.getStringMatcher(command)).find()){
+          controller.createDeck(matcher.group(1));
+       }
+       else if((matcher=DeckCommand.DELETE_DECK.getStringMatcher(command)).find()){
+          controller.deleteDeck(matcher.group(1));
+       }
+       else if((matcher=DeckCommand.SET_ACTIVE.getStringMatcher(command)).find()){
+          controller.setActive(matcher.group(1));
+       }
+       else if((matcher=DeckCommand.ADD_CARD.getStringMatcher(command)).find()){
+          controller.addCard(matcher.group("cardname"), matcher.group("deckname"),matcher.group("side"));
+       }
+       else if((matcher=DeckCommand.REMOVE_CARD.getStringMatcher(command)).find()){
+          controller.removeCard(matcher.group("cardname"),matcher.group("deckname"),matcher.group("side"));
+       }
        else if((matcher=DeckCommand.SHOW_ALL.getStringMatcher(command)).find()){}
-       else if((matcher=DeckCommand.SHOW_DECK.getStringMatcher(command)).find()){}
+       else if((matcher=DeckCommand.SHOW_DECK.getStringMatcher(command)).find()){
+          controller.showDeck(matcher.group("deckname"), matcher.group("side"));
+       }
        else if ((matcher=DeckCommand.SHOW_CARD.getStringMatcher(command)).find()){}
        else if ((matcher=DeckCommand.EXIT.getStringMatcher(command)).find()){};
        return false;

@@ -12,19 +12,33 @@ public class DuelMenuHandler implements MenuHandler{
         Matcher matcher;
         if ((matcher=DuelCommand.SHOW_MENU.getStringMatcher(command)).find()){ controller.showmenu();}
         else if ((matcher=DuelCommand.EXIT.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SELECT_MONSTR.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SELECT_SPELL.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.MONSTER_OPP.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SPELL_OPP.getStringMatcher(command)).find()){}
+        else if ((matcher=DuelCommand.SELECT_MONSTER.getStringMatcher(command)).find()){
+            controller.selectMonster(matcher.group(1));
+        }
+        else if ((matcher=DuelCommand.SELECT_SPELL.getStringMatcher(command)).find()){
+            controller.selectSpell(matcher.group(1));
+        }
+        else if ((matcher=DuelCommand.MONSTER_OPP.getStringMatcher(command)).find()){
+            controller.oppMonster(matcher.group(1));
+        }
+        else if ((matcher=DuelCommand.SPELL_OPP.getStringMatcher(command)).find()){
+            controller.spelltOpp(matcher.group(1));
+        }
         else if((matcher=DuelCommand.SELECT_FIELD.getStringMatcher(command)).find()){}
         else if ((matcher=DuelCommand.FIELD_OPP.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SELECT_HAND.getStringMatcher(command)).find()){}
+        else if ((matcher=DuelCommand.SELECT_HAND.getStringMatcher(command)).find()){
+            controller.selectHand(matcher.group(1));
+        }
         else if((matcher=DuelCommand.DESELECT.getStringMatcher(command)).find()){}
         else if((matcher=DuelCommand.SUMMON.getStringMatcher(command)).find()){}
         else if ((matcher=DuelCommand.SET.getStringMatcher(command)).find()){}
-        else if((matcher=DuelCommand.SET_POSITION.getStringMatcher(command)).find()){}
+        else if((matcher=DuelCommand.SET_POSITION.getStringMatcher(command)).find()){
+            controller.setPosition(matcher.group(1));
+        }
         else if((matcher=DuelCommand.FLIP.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.ATTACK.getStringMatcher(command)).find()){}
+        else if ((matcher=DuelCommand.ATTACK.getStringMatcher(command)).find()){
+            controller.attack(matcher.group(1));
+        }
         else if((matcher=DuelCommand.DIRECT_ATTACK.getStringMatcher(command)).find()){}
         else if ((matcher=DuelCommand.ACTIVE_EFFECT.getStringMatcher(command)).find()){}
         else if ((matcher=DuelCommand.SHOW_GYARD.getStringMatcher(command)).find()){}
@@ -47,7 +61,7 @@ enum DuelCommand {
     MONSTER_OPP("^select --monster --opponent ([1-5])$"),
     SELECT_FIELD("^select --field"),
     SELECT_HAND("^select --hand ([1-6])"),
-    SELECT_MONSTR("^select --monster ([1-5])$"),
+    SELECT_MONSTER("^select --monster ([1-5])$"),
     SELECT_SPELL("^select --spell ([1-5])$"),
     SET("^set$"),
     SET_POSITION("^set --position (attack|defense)$"),

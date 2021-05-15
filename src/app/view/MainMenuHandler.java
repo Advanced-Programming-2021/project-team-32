@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class MainMenuHandler implements MenuHandler {
 
-    public MainMenuHandler(String username) {
+    public MainMenuHandler() {
 
     }
 
@@ -17,7 +17,9 @@ public class MainMenuHandler implements MenuHandler {
         if ((matcher = MainCommand.SHOW_MENU.getStringMatcher(command)).find()) {
             controller.showmenu();
         }
-        else if ((matcher=MainCommand.ENTER_MENU.getStringMatcher(command)).find()){}
+        else if ((matcher=MainCommand.ENTER_MENU.getStringMatcher(command)).find()){
+            controller.enterMenu(matcher.group(1));
+        }
         else if((matcher=MainCommand.LOGOUT.getStringMatcher(command)).find()){}
         else if((matcher=MainCommand.EXIT.getStringMatcher(command)).find()){};
         return false;
