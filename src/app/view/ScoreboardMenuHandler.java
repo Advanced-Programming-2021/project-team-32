@@ -11,10 +11,14 @@ public class ScoreboardMenuHandler implements MenuHandler{
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = ScoreboardCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-            controller.showmenu();
+            System.out.println("Scoreboard Menu");
         }
-        else if((matcher=ScoreboardCommand.SHOW.getStringMatcher(command)).find()){}
-        else if ((matcher=ScoreboardCommand.EXIT.getStringMatcher(command)).find()){};
+        else if((matcher=ScoreboardCommand.SHOW.getStringMatcher(command)).find()){
+           controller.showScoreboard();
+        }
+        else if ((matcher=ScoreboardCommand.EXIT.getStringMatcher(command)).find()){
+            controller.exit();
+        };
         return false;
     }
 }

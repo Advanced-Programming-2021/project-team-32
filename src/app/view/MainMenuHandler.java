@@ -15,19 +15,23 @@ public class MainMenuHandler implements MenuHandler {
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = MainCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-            controller.showmenu();
+            System.out.println("Main Menu");
         }
         else if ((matcher=MainCommand.ENTER_MENU.getStringMatcher(command)).find()){
             controller.enterMenu(matcher.group(1));
         }
-        else if((matcher=MainCommand.LOGOUT.getStringMatcher(command)).find()){}
-        else if((matcher=MainCommand.EXIT.getStringMatcher(command)).find()){};
+        else if((matcher=MainCommand.LOGOUT.getStringMatcher(command)).find()){
+            controller.logout();
+        }
+        else if((matcher=MainCommand.EXIT.getStringMatcher(command)).find()){
+            controller.exitMain();
+        };
         return false;
     }
 }
 enum MainCommand {
     SHOW_MENU("^menu show-current$"),
-    ENTER_MENU("^menu enter (Login|Main|Duel|Deck|Scoreboard|Profile|ShopCommand)$"),
+    ENTER_MENU("^menu enter (Deck|Scoreboard|Profile|Shop)$"),
     LOGOUT("^user logout$"),
     EXIT("^menu exit$");
 

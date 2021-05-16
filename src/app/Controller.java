@@ -1,8 +1,7 @@
 package app;
 
-import app.view.LoginMenuHandler;
-import app.view.MainMenuHandler;
-import app.view.MenuHandler;
+import app.model.User;
+import app.view.*;
 
 public class Controller {
     MenuHandler handler = new LoginMenuHandler();
@@ -14,15 +13,53 @@ public class Controller {
         }
     }
 
-    public void showmenu() {};
-    public void createUser(String username,String password, String nickname){};
-    public void login(String username, String password) {
-        MenuHandler handler = new MainMenuHandler();
+
+    public void createUser(String username,String password, String nickname){
+       if (DataCenter.getInstance().getUser(username)==null){
+           User user=new User(username,password,nickname);
+           DataCenter.getInstance().addUser(user);
+        }
     }
-    public void logout(){};
-    public void enterMenu(String group){};
-    public void changeNickName(String nickname){};
-    public void changePassword(String cp, String password ){};
+    public void login(String username, String password) {
+        User user = DataCenter.getInstance().getUser(username);
+        if (user!=null && !user.getPassword().equals(password)){
+            DataCenter.getInstance().setCurrentUser(user);
+            handler = new MainMenuHandler();
+
+        }
+    }
+    public void logout(){
+        DataCenter.getInstance().setCurrentUser(null);
+        handler = new LoginMenuHandler();
+    };
+    public void enterMenu(String group){
+        if (group.equals("Deck")){
+            handler = new DeckMenuHandler();
+        }
+
+        else if (group.equals("Profile")){
+            handler = new ProfileMenuHandler();
+        }
+        else if (group.equals("Scoreboard")){
+            handler = new ScoreboardMenuHandler();
+        }
+        else if (group.equals("Shop")){
+            handler = new ShopMenuHandler();
+        }
+    };
+    public void exitMain(){
+        logout();
+    }
+    public void changeNickName(String nickname){
+        User user = DataCenter.getInstance().getCurrentUser();
+        user.setNickname(nickname);
+    };
+    public void changePassword(String cp, String password ){
+        User user = DataCenter.getInstance().getCurrentUser();
+        if (user.getPassword().equals(cp)){
+            user.setPassword(password);
+        }
+    };
     public void showScoreboard(){};
     public void showShop(){};
     public void buyCard(String group){};
@@ -52,5 +89,7 @@ public class Controller {
     public void removeCard(String cardname, String deckname, String side){};
     public void showAll(){};
     public void showDeck(String deckname, String side){};
-    public void exit(){};
+    public void exit(){
+        handler = new MainMenuHandler();
+    };
 }

@@ -4,4 +4,5 @@ import app.Controller;
 
 public interface MenuHandler {
     boolean handle(Controller controller);
+
 }

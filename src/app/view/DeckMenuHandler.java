@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
        String command = UserCommandGetter.getUserCommand();
        Matcher matcher;
        if ((matcher = DeckCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-          controller.showmenu();
+          System.out.println("Deck Menu");
        }
        else if((matcher=DeckCommand.CREATE_DECK.getStringMatcher(command)).find()){
           controller.createDeck(matcher.group(1));
@@ -28,12 +28,18 @@ import java.util.regex.Pattern;
        else if((matcher=DeckCommand.REMOVE_CARD.getStringMatcher(command)).find()){
           controller.removeCard(matcher.group("cardname"),matcher.group("deckname"),matcher.group("side"));
        }
-       else if((matcher=DeckCommand.SHOW_ALL.getStringMatcher(command)).find()){}
+       else if((matcher=DeckCommand.SHOW_ALL.getStringMatcher(command)).find()){
+          controller.showAll();
+       }
        else if((matcher=DeckCommand.SHOW_DECK.getStringMatcher(command)).find()){
           controller.showDeck(matcher.group("deckname"), matcher.group("side"));
        }
-       else if ((matcher=DeckCommand.SHOW_CARD.getStringMatcher(command)).find()){}
-       else if ((matcher=DeckCommand.EXIT.getStringMatcher(command)).find()){};
+       else if ((matcher=DeckCommand.SHOW_CARD.getStringMatcher(command)).find()){
+          controller.showCard();
+       }
+       else if ((matcher=DeckCommand.EXIT.getStringMatcher(command)).find()){
+          controller.exit();
+       };
        return false;
     }
  }

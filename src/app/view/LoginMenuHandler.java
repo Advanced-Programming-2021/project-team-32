@@ -13,7 +13,7 @@ public class LoginMenuHandler implements MenuHandler {
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = LoginCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-            controller.showmenu();
+            System.out.println("Login Menu");
         } else if ((matcher = LoginCommand.EXIT.getStringMatcher(command)).find()) {
             return false;
         } else if ((matcher = LoginCommand.LOGIN_USER.getStringMatcher(command)).find()) {

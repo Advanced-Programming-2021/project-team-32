@@ -10,8 +10,11 @@ public class DuelMenuHandler implements MenuHandler{
     public boolean handle(Controller controller) {
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
-        if ((matcher=DuelCommand.SHOW_MENU.getStringMatcher(command)).find()){ controller.showmenu();}
-        else if ((matcher=DuelCommand.EXIT.getStringMatcher(command)).find()){}
+        if ((matcher=DuelCommand.SHOW_MENU.getStringMatcher(command)).find()){
+            System.out.println("Duel Menu");}
+        else if ((matcher=DuelCommand.EXIT.getStringMatcher(command)).find()){
+            controller.exit();
+        }
         else if ((matcher=DuelCommand.SELECT_MONSTER.getStringMatcher(command)).find()){
             controller.selectMonster(matcher.group(1));
         }
@@ -24,27 +27,51 @@ public class DuelMenuHandler implements MenuHandler{
         else if ((matcher=DuelCommand.SPELL_OPP.getStringMatcher(command)).find()){
             controller.spelltOpp(matcher.group(1));
         }
-        else if((matcher=DuelCommand.SELECT_FIELD.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.FIELD_OPP.getStringMatcher(command)).find()){}
+        else if((matcher=DuelCommand.SELECT_FIELD.getStringMatcher(command)).find()){
+            controller.selectField();
+        }
+        else if ((matcher=DuelCommand.FIELD_OPP.getStringMatcher(command)).find()){
+            controller.oppField();
+        }
         else if ((matcher=DuelCommand.SELECT_HAND.getStringMatcher(command)).find()){
             controller.selectHand(matcher.group(1));
         }
-        else if((matcher=DuelCommand.DESELECT.getStringMatcher(command)).find()){}
-        else if((matcher=DuelCommand.SUMMON.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SET.getStringMatcher(command)).find()){}
+        else if((matcher=DuelCommand.DESELECT.getStringMatcher(command)).find()){
+            controller.deselect();
+        }
+        else if((matcher=DuelCommand.SUMMON.getStringMatcher(command)).find()){
+            controller.summon();
+        }
+        else if ((matcher=DuelCommand.SET.getStringMatcher(command)).find()){
+            controller.set();
+        }
         else if((matcher=DuelCommand.SET_POSITION.getStringMatcher(command)).find()){
             controller.setPosition(matcher.group(1));
         }
-        else if((matcher=DuelCommand.FLIP.getStringMatcher(command)).find()){}
+        else if((matcher=DuelCommand.FLIP.getStringMatcher(command)).find()){
+            controller.flip();
+        }
         else if ((matcher=DuelCommand.ATTACK.getStringMatcher(command)).find()){
             controller.attack(matcher.group(1));
         }
-        else if((matcher=DuelCommand.DIRECT_ATTACK.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.ACTIVE_EFFECT.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SHOW_GYARD.getStringMatcher(command)).find()){}
-        else if((matcher=DuelCommand.BACK.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SHOW_CARD.getStringMatcher(command)).find()){}
-        else if ((matcher=DuelCommand.SURRENDER.getStringMatcher(command)).find()){};
+        else if((matcher=DuelCommand.DIRECT_ATTACK.getStringMatcher(command)).find()){
+            controller.directAttack();
+        }
+        else if ((matcher=DuelCommand.ACTIVE_EFFECT.getStringMatcher(command)).find()){
+            controller.activeEffect();
+        }
+        else if ((matcher=DuelCommand.SHOW_GYARD.getStringMatcher(command)).find()){
+            controller.showGyard();
+        }
+        else if((matcher=DuelCommand.BACK.getStringMatcher(command)).find()){
+            controller.back();
+        }
+        else if ((matcher=DuelCommand.SHOW_CARD.getStringMatcher(command)).find()){
+            controller.showCard();
+        }
+        else if ((matcher=DuelCommand.SURRENDER.getStringMatcher(command)).find()){
+            controller.surrender();
+        };
         return false;
     }
 }

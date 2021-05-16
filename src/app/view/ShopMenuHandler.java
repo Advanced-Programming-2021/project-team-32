@@ -12,13 +12,17 @@ import java.util.regex.Pattern;
          String command = UserCommandGetter.getUserCommand();
          Matcher matcher;
          if ((matcher = ShopCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-             controller.showmenu();
+             System.out.println("Shop Menu");
          }
          else if ((matcher=ShopCommand.BUY_CARD.getStringMatcher(command)).find()){
              controller.buyCard(matcher.group(1));
          }
-         else if((matcher=ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()){}
-         else if((matcher=ShopCommand.EXIT.getStringMatcher(command)).find()){};
+         else if((matcher=ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()){
+             controller.showShop();
+         }
+         else if((matcher=ShopCommand.EXIT.getStringMatcher(command)).find()){
+             controller.exit();
+         };
          return false;
      }
  }

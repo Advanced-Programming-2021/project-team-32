@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
          String command = UserCommandGetter.getUserCommand();
          Matcher matcher;
          if ((matcher = ProfileCommand.SHOW_MENU.getStringMatcher(command)).find()) {
-             controller.showmenu();
+             System.out.println("Profile Menu");
          }
          else if((matcher=ProfileCommand.CHANGE_NICKNAME.getStringMatcher(command)).find()){
              controller.changeNickName(matcher.group("nickname"));
@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
          else if((matcher=ProfileCommand.CHANGE_PASSWORD.getStringMatcher(command)).find()){
              controller.changePassword(matcher.group("cp"), matcher.group("password"));
          }
-         else if((matcher=ProfileCommand.EXIT.getStringMatcher(command)).find()){};
+         else if((matcher=ProfileCommand.EXIT.getStringMatcher(command)).find()){
+             controller.exit();
+         };
          return false;
      }
  }
