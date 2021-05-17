@@ -1,4 +1,4 @@
-package src.main.clases;
+package app.model;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@ public class Controller {
             } catch (IllegalActionException e) {
                 System.out.println(e.getMessage());
             }
-            ;
+
 
         }
     }
@@ -45,8 +45,6 @@ public class Controller {
         handler = new LoginMenuHandler();
     }
 
-    ;
-
     public void enterMenu(String group) {
         if (group.equals("Deck")) {
             handler = new DeckMenuHandler();
@@ -59,8 +57,6 @@ public class Controller {
         }
     }
 
-    ;
-
     public void exitMain() {
         logout();
     }
@@ -70,16 +66,12 @@ public class Controller {
         user.setNickname(nickname);
     }
 
-    ;
-
     public void changePassword(String cp, String password) {
         User user = DataCenter.getInstance().getCurrentUser();
         if (user.getPassword().equals(cp)) {
             user.setPassword(password);
         }
     }
-
-    ;
 
     public ArrayList<User> showScoreboard() {
 
@@ -91,146 +83,90 @@ public class Controller {
     }
 
 
-
     public void showShop() {
     }
-
 
 
     public void buyCard(String group) {
     }
 
-    ;
-
     public void activeEffect() {
     }
-
-    ;
 
     public void attack(String group) {
     }
 
-    ;
-
     public void back() {
     }
-
-    ;
 
     public void deselect() {
     }
 
-    ;
-
     public void directAttack() {
     }
-
-    ;
 
     public void oppField() {
     }
 
-    ;
-
     public void flip() {
     }
-
-    ;
 
     public void oppMonster(String group) {
     }
 
-    ;
-
     public void selectField() {
     }
-
-    ;
 
     public void selectHand(String group) {
     }
 
-    ;
-
     public void selectSpell(String group) {
     }
-
-    ;
 
     public void selectMonster(String group) {
     }
 
-    ;
-
     public void set() {
     }
-
-    ;
 
     public void setPosition(String group) {
     }
 
-    ;
-
     public void showCard() {
     }
-
-    ;
 
     public void showGyard() {
     }
 
-    ;
-
     public void spelltOpp(String group) {
     }
-
-    ;
 
     public void summon() {
     }
 
-    ;
-
     public void surrender() {
     }
-
-    ;
 
     public void createDeck(String group) {
     }
 
-    ;
-
     public void deleteDeck(String group) {
     }
-
-    ;
 
     public void setActive(String group) {
     }
 
-    ;
-
     public void addCard(String cardname, String deckname, String side) {
     }
-
-    ;
 
     public void removeCard(String cardname, String deckname, String side) {
     }
 
-    ;
-
     public void showAll() {
     }
 
-    ;
-
     public void showDeck(String deckname, String side) {
     }
-
-    ;
 
     public void exit() {
         handler = new MainMenuHandler();

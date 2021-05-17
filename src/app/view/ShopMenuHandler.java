@@ -13,27 +13,24 @@ import java.util.regex.Pattern;
          Matcher matcher;
          if ((matcher = ShopCommand.SHOW_MENU.getStringMatcher(command)).find()) {
              System.out.println("Shop Menu");
-         }
-         else if ((matcher=ShopCommand.BUY_CARD.getStringMatcher(command)).find()){
+         } else if ((matcher = ShopCommand.BUY_CARD.getStringMatcher(command)).find()) {
              controller.buyCard(matcher.group(1));
-         }
-         else if((matcher=ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()){
+         } else if ((matcher = ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()) {
              controller.showShop();
-         }
-         else if((matcher=ShopCommand.EXIT.getStringMatcher(command)).find()){
+         } else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
              controller.exit();
-         };
+         } else {
+             System.out.println("invalid command");
+         }
          return false;
      }
  }
+
  enum ShopCommand {
     SHOW_MENU("^menu show-current$"),
     BUY_CARD("^shop buy (\\w+)$"),
     SHOW_SHOP("^shop show --all$"),
     EXIT("^menu exit$");
-
-
-
 
     private Pattern commandPattern;
 
