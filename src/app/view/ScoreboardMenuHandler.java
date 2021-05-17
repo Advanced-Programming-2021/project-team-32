@@ -14,7 +14,8 @@ public class ScoreboardMenuHandler implements MenuHandler{
             System.out.println("Scoreboard Menu");
         }
         else if((matcher=ScoreboardCommand.SHOW.getStringMatcher(command)).find()){
-           controller.showScoreboard();
+            System.out.println(controller.showScoreboard());
+
         }
         else if ((matcher=ScoreboardCommand.EXIT.getStringMatcher(command)).find()){
             controller.exit();

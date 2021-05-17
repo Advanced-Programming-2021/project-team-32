@@ -1,6 +1,8 @@
 package app;
 
 import app.model.User;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DataCenter {
@@ -36,4 +38,8 @@ public class DataCenter {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+    public ArrayList<User> getUsers(){
+        return new ArrayList<>(users.values());
+    }
+
 }

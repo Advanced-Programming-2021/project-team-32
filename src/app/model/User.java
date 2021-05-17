@@ -4,19 +4,17 @@ public class User {
     private String  username;
     private String password;
     private String nickname;
+    private int score = 0;
 
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -33,5 +31,15 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public int getScore() {
+        return score;
+    }
+    public void increaseScore(int score){
+        this.score+=score;
+    }
+    public void decreaseScore(int score){
+        this.score-=score;
     }
 }
