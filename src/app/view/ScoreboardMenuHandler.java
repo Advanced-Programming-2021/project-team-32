@@ -32,6 +32,11 @@ public class ScoreboardMenuHandler implements MenuHandler {
 
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Scoreboard menu:\n" +
+                "1.menu show-current\n" +
+                "2.scoreboard show\n" +
+                "3.menu exit\n";
+        System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = ScoreboardCommand.SHOW_MENU.getStringMatcher(command)).find()) {

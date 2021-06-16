@@ -37,6 +37,12 @@ public class MainMenuHandler implements MenuHandler {
 
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Main menu:\n" +
+                "1.menu show-current\n" +
+                "2.menu enter <menu name>\n" +
+                "3.user logout\n" +
+                "4.menu exit\n";
+        System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = MainCommand.SHOW_MENU.getStringMatcher(command)).find()) {

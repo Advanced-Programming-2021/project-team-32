@@ -31,8 +31,15 @@ enum ProfileCommand {
 
 public class ProfileMenuHandler implements MenuHandler {
 
+
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Profile menu:\n" +
+                "1.menu show-current\n" +
+                "2.profile change --nickname <nickname>\n" +
+                "3.profile change --password --current <current password> --new <new password>\n" +
+                "4.menu exit\n";
+        System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = ProfileCommand.SHOW_MENU.getStringMatcher(command)).find()) {

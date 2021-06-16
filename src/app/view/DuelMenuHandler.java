@@ -8,6 +8,27 @@ public class DuelMenuHandler implements MenuHandler{
 
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Duel menu:\n" +
+                "1.menu show-current\n" +
+                "2.select --monster <monster number>\n" +
+                "3.select --monster <monster number> --opponent\n" +
+                "4.select <card address>\n" +
+                "5.select -d\n" +
+                "6.summon\n" +
+                "7.set\n" +
+                "8.set --position attack/defense\n" +
+                "9.flip-summon\n" +
+                "10.attack <number>\n" +
+                "11.attack direct\n" +
+                "12.activate effect\n" +
+                "13.show graveyard\n" +
+                "14.back\n" +
+                "15.card show --selected\n" +
+                "16.surrender\n" +
+                "17.menu exit\n";
+
+        System.out.println(menuCommands);
+
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher=DuelCommand.SHOW_MENU.getStringMatcher(command)).find()){

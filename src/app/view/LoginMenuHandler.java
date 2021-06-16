@@ -9,6 +9,12 @@ public class LoginMenuHandler implements MenuHandler {
 
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Login menu:\n" +
+                "1.user create --username <username> --nickname <nickname> --password <password>\n" +
+                "2.user login --username <username> --password <password>\n" +
+                "3.menu show-current\n" +
+                "4.menu exit\n";
+        System.out.println(menuCommands);
 
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;

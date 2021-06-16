@@ -8,6 +8,18 @@ public class DeckMenuHandler implements MenuHandler {
 
     @Override
     public boolean handle(Controller controller) {
+        String menuCommands = "Deck menu:\n" +
+                "1.menu show-current\n" +
+                "2.deck create <deck name>\n" +
+                "3.deck delete <deck name>\n" +
+                "4.deck set-activate <deck name>\n" +
+                "5.deck add-card --card <card name> --deck <deck name> --side(optional)\n" +
+                "6.deck rm-card --card <card name> --deck <deck name> --side(optional)\n" +
+                "7.deck show --all\n" +
+                "8.deck show --deck-name <deck name> --side(Opt)\n" +
+                "9.deck show --cards\n" +
+                "10.menu exit\n";
+        System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = DeckCommand.SHOW_MENU.getStringMatcher(command)).find()) {

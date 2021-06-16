@@ -9,6 +9,12 @@ import java.util.regex.Pattern;
      @Override
      public boolean handle(Controller controller) {
 
+         String menuCommands = "Shop menu:\n" +
+                 "1.menu show-current\n" +
+                 "2.shop buy <card name>\n" +
+                 "3.shop show --all\n" +
+                 "4.menu exit\n";
+         System.out.println(menuCommands);
          String command = UserCommandGetter.getUserCommand();
          Matcher matcher;
          if ((matcher = ShopCommand.SHOW_MENU.getStringMatcher(command)).find()) {
