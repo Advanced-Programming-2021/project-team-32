@@ -16,6 +16,9 @@ public class Card {
     private boolean isHidden;
 
     //constructor
+    public Card(String s, int i, String s1, String s2, String s3, int parseInt, int anInt, String s4, int i1) {
+    }
+
     public Card() {
     }
 

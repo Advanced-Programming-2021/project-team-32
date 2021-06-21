@@ -1,5 +1,6 @@
 package app;
 
+import app.model.Card;
 import app.model.User;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class DataCenter {
     private static DataCenter dataCenter;
     //تو این بخش همه دیتاهایی که مورد نیاز هست رو (هش‌مپ ها و اری‌لیست ها) اینجا اضافه میشه
     private HashMap<String, User> users;
+    private HashMap<String, Card> cards;
     private User currentUser;
 
     private DataCenter() {
@@ -42,4 +44,10 @@ public class DataCenter {
         return new ArrayList<>(users.values());
     }
 
+    public void loadData() {
+
+    }
+
+    public void storeData() {
+    }
 }
