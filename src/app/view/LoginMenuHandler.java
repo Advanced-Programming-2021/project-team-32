@@ -14,7 +14,8 @@ public class LoginMenuHandler implements MenuHandler {
                 "1.user create --username <username> --nickname <nickname> --password <password>\n" +
                 "2.user login --username <username> --password <password>\n" +
                 "3.menu show-current\n" +
-                "4.menu exit\n";
+                "4.menu exit\n"+
+                "5.end program\n";
         System.out.println(menuCommands);
 
         String command = UserCommandGetter.getUserCommand();
@@ -27,19 +28,25 @@ public class LoginMenuHandler implements MenuHandler {
             controller.login(matcher.group("username"), matcher.group("password"));
         } else if ((matcher = LoginCommand.CREATE_USER.getStringMatcher(command)).find()) {
             controller.createUser(matcher.group("username"), matcher.group("password"), matcher.group("nickname"));
-        } else {
+        }
+        else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+            return false;
+        }
+        else {
             System.out.println("invalid command");
         }
+
         return true;
     }
 }
 
 
- enum LoginCommand {
+enum LoginCommand {
     SHOW_MENU("^menu show-current$"),
     CREATE_USER("^user create (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))(?=.*(--nickname|-n) (?<nickname>\\S+))"),
     LOGIN_USER("^user login (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))"),
-    EXIT("^menu exit$");
+    EXIT("^menu exit$"),
+    END_PROGRAM("^end program$");
 
     private Pattern commandPattern;
 

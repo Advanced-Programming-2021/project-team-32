@@ -14,7 +14,9 @@ import java.util.regex.Pattern;
                  "1.menu show-current\n" +
                  "2.shop buy <card name>\n" +
                  "3.shop show --all\n" +
-                 "4.menu exit\n";
+                 "4.show card <card name>\n"+
+                 "5.menu exit\n"+
+                 "6.end program\n";
          System.out.println(menuCommands);
          String command = UserCommandGetter.getUserCommand();
          Matcher matcher;
@@ -28,10 +30,11 @@ import java.util.regex.Pattern;
            else if ((matcher = ShopCommand.CARD_SHOW.getStringMatcher(command)).find()){
                controller.cardShow(matcher.group(1));
          }
-
-             else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
+           else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
              controller.exit();
-         } else {
+         }  else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+             return false;
+         }else {
              System.out.println("invalid command");
          }
          return true;
@@ -43,7 +46,8 @@ import java.util.regex.Pattern;
     BUY_CARD("^shop buy ((\\w+ *)+)$"),
      CARD_SHOW("^card show ((\\w+ *)+)$"),
     SHOW_SHOP("^shop show --all$"),
-    EXIT("^menu exit$");
+    EXIT("^menu exit$"),
+    END_PROGRAM("^end program$");
 
     private Pattern commandPattern;
 

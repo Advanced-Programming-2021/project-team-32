@@ -18,7 +18,8 @@ public class DeckMenuHandler implements MenuHandler {
                 "7.deck show --all\n" +
                 "8.deck show --deck-name <deck name> --side(Opt)\n" +
                 "9.deck show --cards\n" +
-                "10.menu exit\n";
+                "10.menu exit\n"+
+                "11.end program\n";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -42,7 +43,9 @@ public class DeckMenuHandler implements MenuHandler {
             controller.showCard();
         } else if ((matcher = DeckCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
-        } else {
+        }  else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+            return false;
+        }else {
             System.out.println("invalid command");
         }
         return true;
@@ -59,7 +62,8 @@ public class DeckMenuHandler implements MenuHandler {
     SHOW_ALL("^deck show --all$"),
     SHOW_DECK("^deck show (?=.*--deck-name (?<deck name>\\S+))(?=.*--side)?$"),
     SHOW_CARD("^deck show --cards$"),
-    EXIT("^menu exit$");
+    EXIT("^menu exit$"),
+     END_PROGRAM("^end program$");
 
 
 

@@ -9,6 +9,11 @@ public class User {
     private int score = 0;
     private int balance;
     private HashMap<String, Integer> cards;
+    private Deck selectedDeck;
+
+    private HashMap<String, Deck> decks;
+
+
 
     public User(String username, String password, String nickname) {
         this.username = username;

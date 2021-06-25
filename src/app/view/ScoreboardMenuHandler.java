@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 enum ScoreboardCommand {
     SHOW_MENU("^menu show-current$"),
     SHOW("^scoreboard show$"),
-    EXIT("^menu exit$");
+    EXIT("^menu exit$"),
+    END_PROGRAM("^end program$");
 
     private final Pattern commandPattern;
 
@@ -35,7 +36,8 @@ public class ScoreboardMenuHandler implements MenuHandler {
         String menuCommands = "Scoreboard menu:\n" +
                 "1.menu show-current\n" +
                 "2.scoreboard show\n" +
-                "3.menu exit\n";
+                "3.menu exit\n"+
+                "4.end program\n";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -45,7 +47,9 @@ public class ScoreboardMenuHandler implements MenuHandler {
             System.out.println(controller.showScoreboard());
         } else if ((matcher = ScoreboardCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
-        } else {
+        }  else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+            return false;
+        }else {
             System.out.println("invalid command");
         }
         return true;

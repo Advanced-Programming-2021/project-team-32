@@ -37,17 +37,22 @@ public class Controller {
             }
             User user = new User(username, password, nickname);
             DataCenter.getInstance().addUser(user);
+            System.out.println("user created successfully!");
         } else {
             throw new IllegalActionException("user with username " + username + " already exists");
         }
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password) throws IllegalActionException {
         User user = DataCenter.getInstance().getUser(username);
         if (user != null && user.getPassword().equals(password)) {
             DataCenter.getInstance().setCurrentUser(user);
             handler = new MainMenuHandler();
+            System.out.println("user logged in successfully!");
 
+        }
+        else{
+            throw new IllegalActionException("Username and password didn't match!");
         }
 
     }
@@ -55,6 +60,7 @@ public class Controller {
     public void logout() {
         DataCenter.getInstance().setCurrentUser(null);
         handler = new LoginMenuHandler();
+        System.out.println("user logged out successfully!");
     }
 
     public void enterMenu(String group) {
@@ -73,15 +79,27 @@ public class Controller {
         logout();
     }
 
-    public void changeNickName(String nickname) {
+    public void changeNickName(String nickname) throws IllegalActionException {
+        if (DataCenter.getInstance().nicknameExisted(nickname)){
+            throw new IllegalActionException("user with nickname "+ nickname + " already exists");
+        } else {
         User user = DataCenter.getInstance().getCurrentUser();
         user.setNickname(nickname);
+            System.out.println("nickname changed successfully!");
+        }
     }
 
-    public void changePassword(String cp, String password) {
+    public void changePassword(String cp, String password) throws IllegalActionException {
         User user = DataCenter.getInstance().getCurrentUser();
         if (user.getPassword().equals(cp)) {
+            if (user.getPassword().equals(password)){
+                throw new IllegalActionException("please enter a new password");
+            }
             user.setPassword(password);
+            System.out.println("password changed successfully");
+        }
+        else {
+            throw new IllegalActionException("current password is invalid");
         }
     }
 
@@ -222,4 +240,9 @@ public class Controller {
     }
 
 
+    public void newDuel(String username) throws IllegalActionException {
+        if (DataCenter.getInstance().getUser(username)==null){
+            throw new IllegalActionException("there is no player with this username");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package app.view;
 
 import app.Controller;
+import app.model.IllegalActionException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,9 +9,10 @@ import java.util.regex.Pattern;
 enum ProfileCommand {
     SHOW_MENU("^menu show-current$"),
     CHANGE_NICKNAME("^profile change --nickname (?<nickname>\\S+)$"),
-    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+))$"),
+    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+))"),
     SHOW_USER("^profile show"),
-    EXIT("^menu exit$");
+    EXIT("^menu exit$"),
+    END_PROGRAM("^end program$");
 
     private final Pattern commandPattern;
 
@@ -34,12 +36,13 @@ public class ProfileMenuHandler implements MenuHandler {
 
 
     @Override
-    public boolean handle(Controller controller) {
+    public boolean handle(Controller controller) throws IllegalActionException {
         String menuCommands = "Profile menu:\n" +
                 "1.menu show-current\n" +
                 "2.profile change --nickname <nickname>\n" +
                 "3.profile change --password --current <current password> --new <new password>\n" +
-                "4.menu exit\n";
+                "4.menu exit\n"+
+                "5.end program\n";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -53,7 +56,10 @@ public class ProfileMenuHandler implements MenuHandler {
             System.out.println(controller.getCurrentUser());
         } else if ((matcher = ProfileCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
-        } else {
+        }
+        else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+            return false;
+        }else {
             System.out.println("invalid command");
         }
         return true;
