@@ -1,7 +1,7 @@
 package app.model;
 
 public class User {
-    private String  username;
+    private String username;
     private String password;
     private String nickname;
     private int score = 0;
@@ -36,10 +36,16 @@ public class User {
     public int getScore() {
         return score;
     }
-    public void increaseScore(int score){
-        this.score+=score;
+
+    public void increaseScore(int score) {
+        this.score += score;
     }
-    public void decreaseScore(int score){
-        this.score-=score;
+
+    public void decreaseScore(int score) {
+        this.score -= score;
+    }
+
+    public String toString() {
+        return "username: " + username + "\nnickname: " + nickname + "\nscore: " + score;
     }
 }

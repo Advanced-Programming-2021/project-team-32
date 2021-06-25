@@ -1,4 +1,4 @@
-package app.model;
+package app.model.k;
 
 public enum TypePlace {
     GRAVEYARD("GRAVEYARD "),

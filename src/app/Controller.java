@@ -10,6 +10,7 @@ public class Controller {
     MenuHandler handler = new LoginMenuHandler();
 
     public void run() {
+        DataCenter.getInstance().loadData();
         while (true) {
             try {
                 if (!handler.handle(this))
@@ -18,26 +19,31 @@ public class Controller {
             } catch (IllegalActionException e) {
                 System.out.println(e.getMessage());
             }
-
-
         }
+        DataCenter.getInstance().storeData();
     }
 
 
-    public void createUser(String username, String password, String nickname) {
+    public void createUser(String username, String password, String nickname) throws IllegalActionException {
         if (DataCenter.getInstance().getUser(username) == null) {
+            if (DataCenter.getInstance().nicknameExisted(nickname)) {
+                throw new IllegalActionException("user with nickname " + nickname + " already exists");
+            }
             User user = new User(username, password, nickname);
             DataCenter.getInstance().addUser(user);
+        } else {
+            throw new IllegalActionException("user with username " + username + " already exists");
         }
     }
 
     public void login(String username, String password) {
         User user = DataCenter.getInstance().getUser(username);
-        if (user != null && !user.getPassword().equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
             DataCenter.getInstance().setCurrentUser(user);
             handler = new MainMenuHandler();
 
         }
+
     }
 
     public void logout() {
@@ -173,4 +179,7 @@ public class Controller {
     }
 
 
+    public User getCurrentUser() {
+        return DataCenter.getInstance().getCurrentUser();
+    }
 }

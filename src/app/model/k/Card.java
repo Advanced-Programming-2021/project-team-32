@@ -1,11 +1,13 @@
-package app.model;
+package app.model.k;
+
+import app.model.CardTypes.CardType;
 
 import java.util.List;
 
 public class Card {
     private int id;
     private String name;
-    private TypeCard type;
+    private CardType type;
     private int attack;
     private int defence;
     private int price;
@@ -79,11 +81,11 @@ public class Card {
         this.name = name;
     }
 
-    public TypeCard getType() {
+    public CardType getType() {
         return type;
     }
 
-    public void setType(TypeCard type) {
+    public void setType(CardType type) {
         this.type = type;
     }
 

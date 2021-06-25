@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
          } else {
              System.out.println("invalid command");
          }
-         return false;
+         return true;
      }
  }
 

@@ -45,7 +45,7 @@ public class DeckMenuHandler implements MenuHandler {
         } else {
             System.out.println("invalid command");
         }
-        return false;
+        return true;
     }
  }
 

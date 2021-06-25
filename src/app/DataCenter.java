@@ -1,7 +1,11 @@
 package app;
 
-import app.model.Card;
+import app.model.Cards.Card;
+import app.model.Cards.Monster;
+import app.model.Cards.Spell;
+import app.model.Cards.Trap;
 import app.model.User;
+import app.utils.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +14,9 @@ public class DataCenter {
     private static DataCenter dataCenter;
     //تو این بخش همه دیتاهایی که مورد نیاز هست رو (هش‌مپ ها و اری‌لیست ها) اینجا اضافه میشه
     private HashMap<String, User> users;
-    private HashMap<String, Card> cards;
+    private HashMap<String, Monster> monsters;
+    private HashMap<String, Spell> spells;
+    private HashMap<String, Trap> traps;
     private User currentUser;
 
     private DataCenter() {
@@ -40,14 +46,28 @@ public class DataCenter {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    public ArrayList<User> getUsers(){
+
+    public ArrayList<User> getUsers() {
         return new ArrayList<>(users.values());
     }
 
     public void loadData() {
-
+        monsters = DatabaseManager.loadMonsters();
+        traps = DatabaseManager.loadTraps();
+        spells = DatabaseManager.loadSpells();
+        users = DatabaseManager.loadUsers();
     }
 
     public void storeData() {
+        DatabaseManager.storeUsers(users);
+
+    }
+
+    public boolean nicknameExisted(String nickname) {
+        for (User u : users.values()) {
+            if (u.getNickname().equals(nickname))
+                return true;
+        }
+        return false;
     }
 }

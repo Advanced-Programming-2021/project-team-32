@@ -1,6 +1,7 @@
 package app.view;
 
 import app.Controller;
+import app.model.IllegalActionException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +9,7 @@ import java.util.regex.Pattern;
 public class LoginMenuHandler implements MenuHandler {
 
     @Override
-    public boolean handle(Controller controller) {
+    public boolean handle(Controller controller) throws IllegalActionException {
         String menuCommands = "Login menu:\n" +
                 "1.user create --username <username> --nickname <nickname> --password <password>\n" +
                 "2.user login --username <username> --password <password>\n" +
@@ -36,8 +37,8 @@ public class LoginMenuHandler implements MenuHandler {
 
  enum LoginCommand {
     SHOW_MENU("^menu show-current$"),
-    CREATE_USER("^user create (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))(?=.*--nickname (?<nickname>\\S+))$"),
-    LOGIN_USER("^user login (?=.*--username (?<username>\\S+))(?=.*--password (?<password>\\S+))$"),
+    CREATE_USER("^user create (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))(?=.*(--nickname|-n) (?<nickname>\\S+))"),
+    LOGIN_USER("^user login (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))"),
     EXIT("^menu exit$");
 
     private Pattern commandPattern;

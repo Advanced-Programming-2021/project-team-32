@@ -1,4 +1,6 @@
-package app.model;
+package app.model.k;
+
+import app.model.CardTypes.CardType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,21 +57,21 @@ public class Stock {
     public void showAllCard() {
         System.out.println("MONSTER:");
         for (Card card : getAllCards()) {
-            if (card.getType().equals(TypeCard.MONSTER)) {
+            if (card.getType().equals(CardType.MONSTER)) {
                 System.out.println(card.getName() + " : " + card.getDescription());
             }
         }
         System.out.println("MAGIC:");
         for (Card card : getAllCards()) {
-            if (card.getType().equals(TypeCard.MAGIC)) {
-                System.out.println(card.getName() + " : " + card.getDescription());
-            }
+//            if (card.getType().equals(CardType.MAGIC)) {
+//                System.out.println(card.getName() + " : " + card.getDescription());
+//            }
         }
         System.out.println("MERGE:");
         for (Card card : getAllCards()) {
-            if (card.getType().equals(TypeCard.MERGE)) {
-                System.out.println(card.getName() + " : " + card.getDescription());
-            }
+//            if (card.getType().equals(CardType.MERGE)) {
+//                System.out.println(card.getName() + " : " + card.getDescription());
+//            }
         }
     }
 

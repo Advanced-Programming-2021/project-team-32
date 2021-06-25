@@ -1,4 +1,6 @@
-package app.model;
+package app.model.k;
+
+import app.model.CardTypes.CardType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,18 +110,18 @@ public class Box {
     public void deckShowAllCards() {
         System.out.println("MONSTER:");
         for (Card card : cardList) {
-            if (card.getName().equals(TypeCard.MONSTER))
+            if (card.getName().equals(CardType.MONSTER))
                 System.out.println(card.getName() + " : " + card.getDescription());
         }
         System.out.println("MAGIC:");
         for (Card card : cardList) {
-            if (card.getName().equals(TypeCard.MAGIC))
-                System.out.println(card.getName() + " : " + card.getDescription());
+//            if (card.getName().equals(CardType.MAGIC))
+//                System.out.println(card.getName() + " : " + card.getDescription());
         }
         System.out.println("MERGE:");
         for (Card card : cardList) {
-            if (card.getName().equals(TypeCard.MERGE))
-                System.out.println(card.getName() + " : " + card.getDescription());
+//            if (card.getName().equals(CardType.MERGE))
+//                System.out.println(card.getName() + " : " + card.getDescription());
         }
     }
 

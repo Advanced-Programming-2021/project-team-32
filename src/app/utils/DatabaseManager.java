@@ -1,7 +1,9 @@
 package app.utils;
 
-import app.model.Card;
-import app.model.Trap;
+import app.model.Cards.Card;
+import app.model.Cards.Monster;
+import app.model.Cards.Spell;
+import app.model.Cards.Trap;
 import app.model.User;
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
@@ -12,30 +14,31 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class DatabaseManager {
-    private static final String pathToMonsters = "resources/cards/Monster.csv";
+    private static final String pathToMonsters = "resources/cards/Monsters/";
     private static final String pathToUsers = "resources/users/";
-    private static final String pathToSpells = "resources/cards/Monster.csv";
+    private static final String pathToTraps = "resources/cards/Traps/";
+    private static final String pathToSpells = "resources/cards/Spells/";
 
     public static HashMap<String, User> loadUsers() {
         HashMap<String, User> users = new HashMap<>();
-            File file = new File(pathToUsers);
-            try {
-                String[] files = file.list();
-                if (files == null)
-                    return null;
-                for (String path : files) {
-                    String userJson = readFileAsString(path);
-                    User user = new Gson().fromJson(userJson, User.class);
-                    users.put(user.getUsername(), user);
-                }
-            }catch (NullPointerException | IOException e) {
-                System.out.println(e);
+        File file = new File(pathToUsers);
+        try {
+            String[] files = file.list();
+            if (files == null)
+                return null;
+            for (String path : files) {
+                String userJson = readFileAsString(pathToUsers + path);
+                User user = new Gson().fromJson(userJson, User.class);
+                users.put(user.getUsername(), user);
             }
+        } catch (NullPointerException | IOException e) {
+            System.out.println(e);
+        }
         return users;
     }
 
@@ -45,44 +48,120 @@ public class DatabaseManager {
         return data;
     }
 
-    public static HashMap<String, Card> loadMonsters() {
-        HashMap<String, Card> monsters = new HashMap<>();
+    public static HashMap<String, Monster> loadMonsters() {
+        HashMap<String, Monster> monsters = new HashMap<>();
+        File file = new File(pathToMonsters);
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(pathToMonsters)));
-            String[] record;
-            while ((record = csvReader.readNext()) != null) {
-                monsters.put(record[0], new Card(record[0], Integer.parseInt(record[1]), record[2], record[3], record[4], Integer.parseInt(record[5]), Integer.parseInt(record[6]), record[7], Integer.parseInt(record[8])));
-            }//Name,Level,Attribute, Monster Type , Card Type ,Atk,Def,Description,Price
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            String[] files = file.list();
+            if (files == null)
+                return null;
+            for (String path : files) {
+                String monsterJson = readFileAsString(pathToMonsters + path);
+                Monster monster= new Gson().fromJson(monsterJson, Monster.class);
+                monsters.put(monster.getName(), monster);
+            }
+        } catch (NullPointerException | IOException e) {
+            System.out.println(e);
         }
         return monsters;
     }
 
-    public static HashMap<String, Card> loadTraps() { //Name,Type ,Icon (Property),Description,Status,Price
-        HashMap<String, Card> traps = new HashMap<>();
+    public static HashMap<String, Trap> loadTraps() { //Name,Type ,Icon (Property),Description,Status,Price
+        HashMap<String, Trap> traps = new HashMap<>();
+        File file = new File(pathToTraps);
         try {
-            CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(pathToSpells)));
-            String[] record;
-            while ((record = csvReader.readNext()) != null) {
-                traps.put(record[0], new Trap(record[0], record[1], record[2], record[3], record[4], Integer.parseInt(record[5])));
-            }//Name,Level,Attribute, Monster Type , Card Type ,Atk,Def,Description,Price
-
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            String[] files = file.list();
+            if (files == null)
+                return null;
+            for (String path : files) {
+                String trapJson = readFileAsString(pathToTraps + path);
+                Trap trap= new Gson().fromJson(trapJson, Trap.class);
+                traps.put(trap.getName(), trap);
+            }
+        } catch (NullPointerException | IOException e) {
+            System.out.println(e);
         }
         return traps;
+
     }
+    public static HashMap<String, Spell> loadSpells() { //Name,Type ,Icon (Property),Description,Status,Price
+        HashMap<String, Spell> spells = new HashMap<>();
+        File file = new File(pathToSpells);
+        try {
+            String[] files = file.list();
+            if (files == null)
+                return null;
+            for (String path : files) {
+                String spellJson = readFileAsString(pathToSpells + path);
+                Spell spell = new Gson().fromJson(spellJson, Spell.class);
+                spells.put(spell.getName(), spell);
+            }
+        } catch (NullPointerException | IOException e) {
+            System.out.println(e);
+        }
+        return spells;
+
+    }
+
 
     public static void storeUsers(HashMap<String, User> users) {
+        for (String username : users.keySet()
+        ) {
+            User user = users.get(username);
+            Gson gson = new Gson();
+            String userJson = gson.toJson(user);
+            Path path = Paths.get(pathToUsers + username + ".json");
+            try {
+                Files.write(path, userJson.getBytes());
+            } catch (IOException ignored) {
+            }
+        }
 
     }
 
-    public static void storeMonsters() {
+    public static void storeMonsters(HashMap<String,Monster> monsters) {
+        for (String monsterName : monsters.keySet()
+        ) {
+            Monster monster = monsters.get(monsterName);
+            Gson gson = new Gson();
+            String monsterJson = gson.toJson(monster);
+            Path path = Paths.get(pathToMonsters + monsterName + ".json");
+            try {
+                Files.write(path, monsterJson.getBytes());
+            } catch (IOException ignored) {
+            }
+        }
+
     }
 
-    public static void storeTraps() {
+    public static void storeTraps(HashMap<String, Trap> traps) {
+        for (String trapName : traps.keySet()
+        ) {
+            Trap trap = traps.get(trapName);
+            Gson gson = new Gson();
+            String trapJson = gson.toJson(trap);
+            Path path = Paths.get(pathToTraps + trapName + ".json");
+            try {
+                Files.write(path, trapJson.getBytes());
+            } catch (IOException ignored) {
+            }
+        }
+
+    }
+
+    public static void storeSpells(HashMap<String, Spell> spells) {
+        for (String spellName : spells.keySet()
+        ) {
+            Spell spell = spells.get(spellName);
+            Gson gson = new Gson();
+            String spellJson = gson.toJson(spell);
+            Path path = Paths.get(pathToSpells + spellName + ".json");
+            try {
+                Files.write(path, spellJson.getBytes());
+            } catch (IOException ignored) {
+            }
+        }
+
     }
 
 }

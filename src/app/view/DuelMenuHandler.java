@@ -92,8 +92,8 @@ public class DuelMenuHandler implements MenuHandler{
         }
         else if ((matcher=DuelCommand.SURRENDER.getStringMatcher(command)).find()){
             controller.surrender();
-        };
-        return false;
+        }
+        return true;
     }
 }
 

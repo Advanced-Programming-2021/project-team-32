@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 enum ProfileCommand {
     SHOW_MENU("^menu show-current$"),
     CHANGE_NICKNAME("^profile change --nickname (?<nickname>\\S+)$"),
-    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+)))$"),
+    CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+))$"),
+    SHOW_USER("^profile show"),
     EXIT("^menu exit$");
 
     private final Pattern commandPattern;
@@ -48,11 +49,13 @@ public class ProfileMenuHandler implements MenuHandler {
             controller.changeNickName(matcher.group("nickname"));
         } else if ((matcher = ProfileCommand.CHANGE_PASSWORD.getStringMatcher(command)).find()) {
             controller.changePassword(matcher.group("cp"), matcher.group("password"));
+        } else if ((matcher = ProfileCommand.SHOW_USER.getStringMatcher(command)).find()) {
+            System.out.println(controller.getCurrentUser());
         } else if ((matcher = ProfileCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
         } else {
             System.out.println("invalid command");
         }
-        return false;
+        return true;
     }
 }

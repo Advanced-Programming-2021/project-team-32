@@ -39,7 +39,7 @@ public class MainMenuHandler implements MenuHandler {
     public boolean handle(Controller controller) {
         String menuCommands = "Main menu:\n" +
                 "1.menu show-current\n" +
-                "2.menu enter <menu name>\n" +
+                "2.menu enter <menu name> (Deck|Scoreboard|Profile|Shop)\n" +
                 "3.user logout\n" +
                 "4.menu exit\n";
         System.out.println(menuCommands);
@@ -56,6 +56,6 @@ public class MainMenuHandler implements MenuHandler {
         } else {
             System.out.println("invalid command");
         }
-        return false;
+        return true;
     }
 }
