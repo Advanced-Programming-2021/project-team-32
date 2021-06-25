@@ -17,6 +17,7 @@ public class DataCenter {
     private HashMap<String, Monster> monsters;
     private HashMap<String, Spell> spells;
     private HashMap<String, Trap> traps;
+    private HashMap<String, Card> cards;
     private User currentUser;
 
     private DataCenter() {
@@ -51,16 +52,41 @@ public class DataCenter {
         return new ArrayList<>(users.values());
     }
 
+    public HashMap<String, Monster> getMonsters() {
+        return monsters;
+    }
+
+    public HashMap<String, Spell> getSpells() {
+        return spells;
+    }
+
+    public HashMap<String, Trap> getTraps() {
+        return traps;
+    }
+
+    public HashMap<String, Card> getCards() {
+        return cards;
+    }
+
     public void loadData() {
         monsters = DatabaseManager.loadMonsters();
         traps = DatabaseManager.loadTraps();
         spells = DatabaseManager.loadSpells();
         users = DatabaseManager.loadUsers();
+        cards = new HashMap<>();
+        for (Trap trap : traps.values()) {
+            cards.put(trap.getName(), trap);
+        }
+        for (Monster monster : monsters.values()) {
+            cards.put(monster.getName(), monster);
+        }
+        for (Spell spell : spells.values()) {
+            cards.put(spell.getName(), spell);
+        }
     }
 
     public void storeData() {
         DatabaseManager.storeUsers(users);
-
     }
 
     public boolean nicknameExisted(String nickname) {

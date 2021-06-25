@@ -68,4 +68,14 @@ public class Monster extends Card {
     public void setDEF(int DEF) {
         this.DEF = DEF;
     }
+
+    @Override
+    public String toString() {
+        return   "name: "+ name + "\n" +
+                 "Level: "+ level + "\n"+
+                 "Type: "+ MonsterType + "\n"+
+                 "ATK: "+ ATK + "\n"+
+                 "DEF: "+ DEF + "\n"+
+                 "Description: " + description + "\n";
+    }
 }

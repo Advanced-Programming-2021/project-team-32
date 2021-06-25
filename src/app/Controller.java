@@ -1,10 +1,16 @@
 package app;
 
+import app.model.Cards.Card;
+import app.model.Cards.Monster;
+import app.model.Cards.Spell;
+import app.model.Cards.Trap;
 import app.model.IllegalActionException;
 import app.model.User;
 import app.view.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class Controller {
     MenuHandler handler = new LoginMenuHandler();
@@ -90,10 +96,42 @@ public class Controller {
 
 
     public void showShop() {
+        HashMap<String, Card> cards = DataCenter.getInstance().getCards();
+
+        for (Card card : cards.values()) {
+            System.out.println(card.getName() + " : " + card.getDescription() + "\n");
+        }
+
     }
 
 
-    public void buyCard(String group) {
+    public void buyCard(String group) throws IllegalActionException {
+        HashMap<String, Card> cards = DataCenter.getInstance().getCards();
+
+        if (cards.containsKey(group)) {
+            Card card = cards.get(group);
+            if (card.getPrice() <= DataCenter.getInstance().getCurrentUser().getBalance()) {
+                DataCenter.getInstance().getCurrentUser().decreaseBalance(card.getPrice());
+                DataCenter.getInstance().getCurrentUser().addCard(group);
+            } else {
+                throw new IllegalActionException("not enough money");
+            }
+        } else {
+            throw new IllegalActionException("there is no card with this name");
+        }
+
+
+    }
+
+    public void cardShow(String group) throws IllegalActionException {
+        HashMap<String, Card> cards = DataCenter.getInstance().getCards();
+        if (cards.containsKey(group)){
+            Card card = cards.get(group);
+            System.out.println(card.toString());
+        }
+        else {
+            throw new IllegalActionException("card with this name does not exist");
+        }
     }
 
     public void activeEffect() {
@@ -182,4 +220,6 @@ public class Controller {
     public User getCurrentUser() {
         return DataCenter.getInstance().getCurrentUser();
     }
+
+
 }

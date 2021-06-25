@@ -1,13 +1,14 @@
 package app.view;
 
 import app.Controller;
+import app.model.IllegalActionException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
  public class ShopMenuHandler implements MenuHandler{
 
      @Override
-     public boolean handle(Controller controller) {
+     public boolean handle(Controller controller) throws IllegalActionException {
 
          String menuCommands = "Shop menu:\n" +
                  "1.menu show-current\n" +
@@ -23,7 +24,12 @@ import java.util.regex.Pattern;
              controller.buyCard(matcher.group(1));
          } else if ((matcher = ShopCommand.SHOW_SHOP.getStringMatcher(command)).find()) {
              controller.showShop();
-         } else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
+         }
+           else if ((matcher = ShopCommand.CARD_SHOW.getStringMatcher(command)).find()){
+               controller.cardShow(matcher.group(1));
+         }
+
+             else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
              controller.exit();
          } else {
              System.out.println("invalid command");
@@ -34,7 +40,8 @@ import java.util.regex.Pattern;
 
  enum ShopCommand {
     SHOW_MENU("^menu show-current$"),
-    BUY_CARD("^shop buy (\\w+)$"),
+    BUY_CARD("^shop buy ((\\w+ *)+)$"),
+     CARD_SHOW("^card show ((\\w+ *)+)$"),
     SHOW_SHOP("^shop show --all$"),
     EXIT("^menu exit$");
 
