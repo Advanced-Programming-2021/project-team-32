@@ -9,7 +9,8 @@ enum ScoreboardCommand {
     SHOW_MENU("^menu show-current$"),
     SHOW("^scoreboard show$"),
     EXIT("^menu exit$"),
-    END_PROGRAM("^end program$");
+    END_PROGRAM("^end program$"),
+    ENTER_MENU("^menu enter$");
 
     private final Pattern commandPattern;
 
@@ -44,10 +45,12 @@ public class ScoreboardMenuHandler implements MenuHandler {
         if ((matcher = ScoreboardCommand.SHOW_MENU.getStringMatcher(command)).find()) {
             System.out.println("Scoreboard Menu");
         } else if ((matcher = ScoreboardCommand.SHOW.getStringMatcher(command)).find()) {
-            System.out.println(controller.showScoreboard());
+            controller.showScoreboard();
         } else if ((matcher = ScoreboardCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
-        }  else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+        }  else if ((matcher=ScoreboardCommand.ENTER_MENU.getStringMatcher(command)).find()){
+            System.out.println("menu navigation is not possible");
+        }else if ((matcher = ScoreboardCommand.END_PROGRAM.getStringMatcher(command)).find()){
             return false;
         }else {
             System.out.println("invalid command");

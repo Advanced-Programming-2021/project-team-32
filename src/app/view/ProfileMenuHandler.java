@@ -12,7 +12,8 @@ enum ProfileCommand {
     CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+))"),
     SHOW_USER("^profile show"),
     EXIT("^menu exit$"),
-    END_PROGRAM("^end program$");
+    END_PROGRAM("^end program$"),
+    ENTER_MENU("^menu enter$");
 
     private final Pattern commandPattern;
 
@@ -56,8 +57,10 @@ public class ProfileMenuHandler implements MenuHandler {
             System.out.println(controller.getCurrentUser());
         } else if ((matcher = ProfileCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
+        }else if ((matcher=ProfileCommand.ENTER_MENU.getStringMatcher(command)).find()){
+            System.out.println("menu navigation is not possible");
         }
-        else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+        else if ((matcher = ProfileCommand.END_PROGRAM.getStringMatcher(command)).find()){
             return false;
         }else {
             System.out.println("invalid command");

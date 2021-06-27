@@ -89,7 +89,9 @@ public class DuelMenuHandler implements MenuHandler{
         }
         else if ((matcher=DuelCommand.SHOW_CARD.getStringMatcher(command)).find()){
             controller.showCard();
-        } else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+        } else if ((matcher=DuelCommand.ENTER_MENU.getStringMatcher(command)).find()){
+            System.out.println("menu navigation is not possible");
+        }else if ((matcher = DuelCommand.END_PROGRAM.getStringMatcher(command)).find()){
             return false;
         }
         else if ((matcher=DuelCommand.SURRENDER.getStringMatcher(command)).find()){
@@ -121,7 +123,8 @@ enum DuelCommand {
     SPELL_OPP("^select --spell --opponent ([1-5])$"),
     SUMMON("^summon$"),
     SURRENDER("^surrender$"),
-    END_PROGRAM("^end program$");
+    END_PROGRAM("^end program$"),
+    ENTER_MENU("^menu enter$");
 
 
     private Pattern commandPattern;

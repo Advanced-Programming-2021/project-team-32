@@ -11,7 +11,7 @@ enum MainCommand {
     ENTER_MENU("^menu enter (Deck|Scoreboard|Profile|Shop)$"),
     LOGOUT("^user logout$"),
     EXIT("^menu exit$"),
-    NEW_DUEL("^duel new (?=.*--second)(?=.*-player (?<username>\\S+)) (?=.*--rounds) ([1-3])"),
+    NEW_DUEL("^duel new (?=.*--second -player (?<username>\\S+))(?=.*--rounds (?<round>[1-3]))"),
     END_PROGRAM("^end program$");
 
     private final Pattern commandPattern;
@@ -60,7 +60,7 @@ public class MainMenuHandler implements MenuHandler {
         }
         else if ((matcher = MainCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exitMain();
-        }   else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+        }   else if ((matcher = MainCommand.END_PROGRAM.getStringMatcher(command)).find()){
             return false;
         }
         else {

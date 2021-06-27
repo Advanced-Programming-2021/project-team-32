@@ -32,7 +32,9 @@ import java.util.regex.Pattern;
          }
            else if ((matcher = ShopCommand.EXIT.getStringMatcher(command)).find()) {
              controller.exit();
-         }  else if ((matcher = LoginCommand.END_PROGRAM.getStringMatcher(command)).find()){
+         } else if ((matcher=ShopCommand.ENTER_MENU.getStringMatcher(command)).find()){
+             System.out.println("menu navigation is not possible");
+         } else if ((matcher = ShopCommand.END_PROGRAM.getStringMatcher(command)).find()){
              return false;
          }else {
              System.out.println("invalid command");
@@ -47,7 +49,8 @@ import java.util.regex.Pattern;
      CARD_SHOW("^card show ((\\w+ *)+)$"),
     SHOW_SHOP("^shop show --all$"),
     EXIT("^menu exit$"),
-    END_PROGRAM("^end program$");
+    END_PROGRAM("^end program$"),
+     ENTER_MENU("^menu enter$");
 
     private Pattern commandPattern;
 
