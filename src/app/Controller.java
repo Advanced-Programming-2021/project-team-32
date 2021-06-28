@@ -1,5 +1,7 @@
 package app;
 
+import app.model.Battle.Battle;
+import app.model.Battle.BattleCard;
 import app.model.CardTypes.CardType;
 import app.model.Cards.Card;
 import app.model.Deck;
@@ -167,25 +169,138 @@ public class Controller {
     public void directAttack() {
     }
 
-    public void oppField() {
+    public void oppField() throws IllegalActionException {
+        BattleCard[] fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone();
+        if (fieldZone == null){
+            throw new IllegalActionException("no card found in the given position");
+        }
     }
 
     public void flip() {
     }
-
-    public void oppMonster(String group) {
+    public void spellOpp(int group) throws IllegalActionException {
+        if (group > 5 || group < 1) {
+            throw new IllegalActionException("invalid selection");
+        }
+        int selectedAddress;
+        switch (group) {
+            case 1:
+                selectedAddress = 2;
+                break;
+            case 2:
+                selectedAddress = 1;
+                break;
+            case 3:
+                selectedAddress = 3;
+                break;
+            case 4:
+                selectedAddress = 0;
+                break;
+            default:
+                selectedAddress = 4;
+        }
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard[] spellZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getSpellZone(turn % 2);
+        if (spellZone[selectedAddress] == null) {
+            throw new IllegalActionException("no card found in the given position");
+        }
     }
 
-    public void selectField() {
+    public void oppMonster(int group) throws IllegalActionException {
+        if (group > 5 || group < 1) {
+            throw new IllegalActionException("invalid selection");
+        }
+        int selectedAddress;
+        switch (group) {
+            case 1:
+                selectedAddress = 2;
+                break;
+            case 2:
+                selectedAddress = 1;
+                break;
+            case 3:
+                selectedAddress = 3;
+                break;
+            case 4:
+                selectedAddress = 0;
+                break;
+            default:
+                selectedAddress = 4;
+        }
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard[] monsterZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getMonsterZone(turn % 2);
+        if (monsterZone[selectedAddress] == null) {
+            throw new IllegalActionException("no card found in the given position");
+        }
+
     }
 
-    public void selectHand(String group) {
+    public void selectField() throws IllegalActionException {
+        BattleCard[] fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone();
+        if (fieldZone == null){
+            throw new IllegalActionException("no card found in the given position");
+        }
+
     }
 
-    public void selectSpell(String group) {
+    public void selectHand(String group) throws IllegalActionException {
+
     }
 
-    public void selectMonster(String group) {
+    public void selectSpell(int group) throws IllegalActionException {
+        if (group > 5 || group < 1) {
+            throw new IllegalActionException("invalid selection");
+        }
+        int selectedAddress;
+        switch (group) {
+            case 1:
+                selectedAddress = 2;
+                break;
+            case 2:
+                selectedAddress = 3;
+                break;
+            case 3:
+                selectedAddress = 1;
+                break;
+            case 4:
+                selectedAddress = 4;
+                break;
+            default:
+                selectedAddress = 0;
+        }
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard[] spellZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getSpellZone(turn % 2);
+        if (spellZone[selectedAddress] == null) {
+            throw new IllegalActionException("no card found in the given position");
+        }
+    }
+
+    public void selectMonster(int group) throws IllegalActionException {
+        if (group > 5 || group < 1) {
+            throw new IllegalActionException("invalid selection");
+        }
+        int selectedAddress;
+        switch (group) {
+            case 1:
+                selectedAddress = 2;
+                break;
+            case 2:
+                selectedAddress = 3;
+                break;
+            case 3:
+                selectedAddress = 1;
+                break;
+            case 4:
+                selectedAddress = 4;
+                break;
+            default:
+                selectedAddress = 0;
+        }
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard[] monsterZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getMonsterZone(turn % 2);
+        if (monsterZone[selectedAddress] == null) {
+            throw new IllegalActionException("no card found in the given position");
+        }
     }
 
     public void set() {
@@ -200,8 +315,7 @@ public class Controller {
     public void showGyard() {
     }
 
-    public void spelltOpp(String group) {
-    }
+
 
     public void summon() {
     }
@@ -255,7 +369,7 @@ public class Controller {
         ArrayList<Card> monsters;
         ArrayList<Card> spstrps;
 
-        }
+    }
 
 
     public void exit() {
@@ -268,9 +382,23 @@ public class Controller {
     }
 
 
-    public void newDuel(String username) throws IllegalActionException {
-        if (DataCenter.getInstance().getUser(username) == null) {
+    public void newDuel(String username, int round) throws IllegalActionException {
+        DataCenter d = DataCenter.getInstance();
+        User currentUser = d.getCurrentUser();
+        if (d.getUser(username) == null) {
             throw new IllegalActionException("there is no player with this username");
         }
+        User secondPlayer = d.getUser(username);
+        if (round > 3 || round < 1) {
+            throw new IllegalActionException("number of rounds is not supported");
+        }
+        if (currentUser.getActiveDeck() == null || !currentUser.getActiveDeck().isDeckValid()) {
+            throw new IllegalActionException(getCurrentUser().getUsername() + "’s deck is invalid");
+        }
+        if (secondPlayer.getActiveDeck() == null || !secondPlayer.getActiveDeck().isDeckValid()) {
+            throw new IllegalActionException(username + "’s deck is invalid");
+        }
+        d.setCurrentBattle(new Battle(currentUser, secondPlayer, round));
+        handler = new DuelMenuHandler();
     }
 }

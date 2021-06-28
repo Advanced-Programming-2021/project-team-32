@@ -5,6 +5,7 @@ import app.model.IllegalActionException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class DeckMenuHandler implements MenuHandler {
 
     @Override
@@ -19,76 +20,72 @@ public class DeckMenuHandler implements MenuHandler {
                 "7.deck show --all\n" +
                 "8.deck show --deck-name <deck name> --side(Opt)\n" +
                 "9.deck show --cards\n" +
-                "10.menu exit\n"+
-                "11.end program\n";
+                "10.menu exit\n" +
+                "11.end program";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
         if ((matcher = DeckCommand.SHOW_MENU.getStringMatcher(command)).find()) {
             System.out.println("Deck Menu");
         } else if ((matcher = DeckCommand.CREATE_DECK.getStringMatcher(command)).find()) {
-            controller.createDeck(matcher.group(1));
+            controller.createDeck(matcher.group(1).trim());
         } else if ((matcher = DeckCommand.DELETE_DECK.getStringMatcher(command)).find()) {
-            controller.deleteDeck(matcher.group(1));
+            controller.deleteDeck(matcher.group(1).trim());
         } else if ((matcher = DeckCommand.SET_ACTIVE.getStringMatcher(command)).find()) {
-            controller.setActive(matcher.group(1));
+            controller.setActive(matcher.group(1).trim());
         } else if ((matcher = DeckCommand.ADD_CARD.getStringMatcher(command)).find()) {
             boolean isSide = command.contains("--side");
-            controller.addCard(matcher.group("cardName"), matcher.group("deckName"), isSide);
+            controller.addCard(matcher.group("cardName").trim(), matcher.group("deckName").trim(), isSide);
         } else if ((matcher = DeckCommand.REMOVE_CARD.getStringMatcher(command)).find()) {
             boolean isSide = command.contains("--side");
-            controller.removeCard(matcher.group("cardName"), matcher.group("deckName"), isSide);
+            controller.removeCard(matcher.group("cardName").trim(), matcher.group("deckName").trim(), isSide);
         } else if ((matcher = DeckCommand.SHOW_ALL.getStringMatcher(command)).find()) {
             controller.showAll();
         } else if ((matcher = DeckCommand.SHOW_DECK.getStringMatcher(command)).find()) {
             boolean isSide = command.contains("--side");
-            controller.showDeck(matcher.group("deckName"), isSide);
+            controller.showDeck(matcher.group("deckName").trim(), isSide);
         } else if ((matcher = DeckCommand.SHOW_CARD.getStringMatcher(command)).find()) {
             controller.showCard();
         } else if ((matcher = DeckCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
-        } else if ((matcher=DeckCommand.ENTER_MENU.getStringMatcher(command)).find()){
+        } else if ((matcher = DeckCommand.ENTER_MENU.getStringMatcher(command)).find()) {
             System.out.println("menu navigation is not possible");
-        } else if ((matcher = DeckCommand.END_PROGRAM.getStringMatcher(command)).find()){
+        } else if ((matcher = DeckCommand.END_PROGRAM.getStringMatcher(command)).find()) {
             return false;
-        }else {
+        } else {
             System.out.println("invalid command");
         }
         return true;
     }
- }
 
- enum DeckCommand {
-    SHOW_MENU("^menu show-current$"),
-    CREATE_DECK("^deck create (\\w+)$"),
-    DELETE_DECK("^deck delete (\\w+)$"),
-    SET_ACTIVE("^deck set-activate (\\w+)$"),
-    ADD_CARD("^deck add-card (?=.*--card (?<cardName>\\S+))(?=.*--deck (?<deckName>\\S+))"),
-    REMOVE_CARD("^deck rm-card  (?=.*--card (?<cardName>\\S+))(?=.*--deck (?<deckName>\\S+))"),
-    SHOW_ALL("^deck show --all$"),
-    SHOW_DECK("^deck show (?=.*--deck-name (?<deckName>\\S+))"),
-    SHOW_CARD("^deck show --cards$"),
-    EXIT("^menu exit$"),
-     END_PROGRAM("^end program$"),
-     ENTER_MENU("^menu enter$");
+    enum DeckCommand {
+        SHOW_MENU("^menu show-current$"),
+        CREATE_DECK("^deck create ((\\w+ *)+)$"),
+        DELETE_DECK("^deck delete ((\\w+ *)+)$"),
+        SET_ACTIVE("^deck set-activate ((\\w+ *)+)$"),
+        ADD_CARD("^deck add-card (?=.*--card (?<cardName>(\\w+ *)+))(?=.*--deck (?<deckName>(\\w+ *)+))"),
+        REMOVE_CARD("^deck rm-card  (?=.*--card (?<cardName>(\\w+ *)+))(?=.*--deck (?<deckName>(\\w+ *)+))"),
+        SHOW_ALL("^deck show --all$"),
+        SHOW_DECK("^deck show (?=.*--deck-name (?<deckName>(\\w+ *)+))"),
+        SHOW_CARD("^deck show --cards$"),
+        EXIT("^menu exit$"),
+        END_PROGRAM("^end program$"),
+        ENTER_MENU("^menu enter$");
+        private Pattern commandPattern;
+        public Pattern getCommandPattern() {
 
+            return commandPattern;
+        }
 
+        public Matcher getStringMatcher(String input) {
 
+            return this.commandPattern.matcher(input);
+        }
 
-    private Pattern commandPattern;
+        DeckCommand(String commandPatternString) {
 
-    public Pattern getCommandPattern() {
-
-        return commandPattern;
-    }
-
-    public Matcher getStringMatcher(String input) {
-
-        return this.commandPattern.matcher(input);
-    }
-
-    DeckCommand(String commandPatternString) {
-
-        this.commandPattern = Pattern.compile(commandPatternString);
+            this.commandPattern = Pattern.compile(commandPatternString);
+        }
     }
 }
+

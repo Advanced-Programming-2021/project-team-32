@@ -126,10 +126,10 @@ public class User {
             if (decks.containsKey(deckName)) {
                 Deck deck = decks.get(deckName);
                 deck.addCard(cardName, side);
+                notInADeck.removeCardFromDeck(cardName, false);
             } else {
                 throw new IllegalActionException("deck with name " + deckName + " does not exist");
             }
-
         } else {
             throw new IllegalActionException("card with name " + cardName + " does not exist");
         }

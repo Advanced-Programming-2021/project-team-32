@@ -5,31 +5,6 @@ import app.Controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum ScoreboardCommand {
-    SHOW_MENU("^menu show-current$"),
-    SHOW("^scoreboard show$"),
-    EXIT("^menu exit$"),
-    END_PROGRAM("^end program$"),
-    ENTER_MENU("^menu enter$");
-
-    private final Pattern commandPattern;
-
-    ScoreboardCommand(String commandPatternString) {
-
-        this.commandPattern = Pattern.compile(commandPatternString);
-    }
-
-    public Pattern getCommandPattern() {
-
-        return commandPattern;
-    }
-
-    public Matcher getStringMatcher(String input) {
-
-        return this.commandPattern.matcher(input);
-    }
-}
-
 public class ScoreboardMenuHandler implements MenuHandler {
 
     @Override
@@ -38,7 +13,7 @@ public class ScoreboardMenuHandler implements MenuHandler {
                 "1.menu show-current\n" +
                 "2.scoreboard show\n" +
                 "3.menu exit\n"+
-                "4.end program\n";
+                "4.end program";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -57,4 +32,30 @@ public class ScoreboardMenuHandler implements MenuHandler {
         }
         return true;
     }
+
+    enum ScoreboardCommand {
+        SHOW_MENU("^menu show-current$"),
+        SHOW("^scoreboard show$"),
+        EXIT("^menu exit$"),
+        END_PROGRAM("^end program$"),
+        ENTER_MENU("^menu enter$");
+
+        private final Pattern commandPattern;
+
+        ScoreboardCommand(String commandPatternString) {
+
+            this.commandPattern = Pattern.compile(commandPatternString);
+        }
+
+        public Pattern getCommandPattern() {
+
+            return commandPattern;
+        }
+
+        public Matcher getStringMatcher(String input) {
+
+            return this.commandPattern.matcher(input);
+        }
+    }
+
 }

@@ -16,7 +16,7 @@ public class LoginMenuHandler implements MenuHandler {
                 "3.menu show-current\n" +
                 "4.menu enter\n"+
                 "5.menu exit\n"+
-                "6.end program\n";
+                "6.end program";
         System.out.println(menuCommands);
 
         String command = UserCommandGetter.getUserCommand();
@@ -26,9 +26,9 @@ public class LoginMenuHandler implements MenuHandler {
         } else if ((matcher = LoginCommand.EXIT.getStringMatcher(command)).find()) {
             return false;
         } else if ((matcher = LoginCommand.LOGIN_USER.getStringMatcher(command)).find()) {
-            controller.login(matcher.group("username"), matcher.group("password"));
+            controller.login(matcher.group("username").trim(), matcher.group("password"));
         } else if ((matcher = LoginCommand.CREATE_USER.getStringMatcher(command)).find()) {
-            controller.createUser(matcher.group("username"), matcher.group("password"), matcher.group("nickname"));
+            controller.createUser(matcher.group("username").trim(), matcher.group("password"), matcher.group("nickname"));
         }else if ((matcher=LoginCommand.ENTER_MENU.getStringMatcher(command)).find()){
             System.out.println("menu navigation is not possible");
         }
@@ -41,28 +41,29 @@ public class LoginMenuHandler implements MenuHandler {
 
         return true;
     }
+
+    enum LoginCommand {
+        SHOW_MENU("^menu show-current$"),
+        CREATE_USER("^user create (?=.*(--username|-u) (?<username>(\\w+ *)+))(?=.*(--password|-p) (?<password>\\S+))(?=.*(--nickname|-n) (?<nickname>\\S+))"),
+        LOGIN_USER("^user login (?=.*(--username|-u) (?<username>(\\w+ *)+))(?=.*(--password|-p) (?<password>\\S+))"),
+        EXIT("^menu exit$"),
+        END_PROGRAM("^end program$"),
+        ENTER_MENU("^menu enter$");
+
+        private Pattern commandPattern;
+
+        public Pattern getCommandPattern() {
+            return commandPattern;
+        }
+
+        public Matcher getStringMatcher(String input) {
+            return this.commandPattern.matcher(input);
+        }
+
+        LoginCommand(String commandPatternString) {
+            this.commandPattern = Pattern.compile(commandPatternString);
+        }
+    }
+
 }
 
-
-enum LoginCommand {
-    SHOW_MENU("^menu show-current$"),
-    CREATE_USER("^user create (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))(?=.*(--nickname|-n) (?<nickname>\\S+))"),
-    LOGIN_USER("^user login (?=.*(--username|-u) (?<username>\\S+))(?=.*(--password|-p) (?<password>\\S+))"),
-    EXIT("^menu exit$"),
-    END_PROGRAM("^end program$"),
-    ENTER_MENU("^menu enter$");
-
-    private Pattern commandPattern;
-
-    public Pattern getCommandPattern() {
-        return commandPattern;
-    }
-
-    public Matcher getStringMatcher(String input) {
-        return this.commandPattern.matcher(input);
-    }
-
-    LoginCommand(String commandPatternString) {
-        this.commandPattern = Pattern.compile(commandPatternString);
-    }
-}

@@ -1,13 +1,14 @@
 package app.view;
 
 import app.Controller;
+import app.model.IllegalActionException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class DuelMenuHandler implements MenuHandler{
 
     @Override
-    public boolean handle(Controller controller) {
+    public boolean handle(Controller controller) throws IllegalActionException {
         String menuCommands = "Duel menu:\n" +
                 "1.menu show-current\n" +
                 "2.select --monster <monster number>\n" +
@@ -25,7 +26,7 @@ public class DuelMenuHandler implements MenuHandler{
                 "14.back\n" +
                 "15.card show --selected\n" +
                 "16.surrender\n" +
-                "17.menu exit\n";
+                "17.menu exit";
 
         System.out.println(menuCommands);
 
@@ -37,16 +38,16 @@ public class DuelMenuHandler implements MenuHandler{
             controller.exit();
         }
         else if ((matcher=DuelCommand.SELECT_MONSTER.getStringMatcher(command)).find()){
-            controller.selectMonster(matcher.group(1));
+            controller.selectMonster(Integer.parseInt(matcher.group(1)));
         }
         else if ((matcher=DuelCommand.SELECT_SPELL.getStringMatcher(command)).find()){
-            controller.selectSpell(matcher.group(1));
+            controller.selectSpell(Integer.parseInt(matcher.group(1)));
         }
         else if ((matcher=DuelCommand.MONSTER_OPP.getStringMatcher(command)).find()){
-            controller.oppMonster(matcher.group(1));
+            controller.oppMonster(Integer.parseInt(matcher.group(1)));
         }
         else if ((matcher=DuelCommand.SPELL_OPP.getStringMatcher(command)).find()){
-            controller.spelltOpp(matcher.group(1));
+            controller.spellOpp(Integer.parseInt(matcher.group(1)));
         }
         else if((matcher=DuelCommand.SELECT_FIELD.getStringMatcher(command)).find()){
             controller.selectField();
@@ -99,45 +100,46 @@ public class DuelMenuHandler implements MenuHandler{
         }
         return true;
     }
+
+    enum DuelCommand {
+        ACTIVE_EFFECT("^activate effect$"),
+        ATTACK("^attack ([1-5])$"),
+        BACK("^back$"),
+        DESELECT("^select -d$"),
+        DIRECT_ATTACK("^attack direct$"),
+        EXIT("^menu exit$"),
+        FIELD_OPP("^select --field --opponent$"),
+        FLIP("^flip-summon$"),
+        MONSTER_OPP("^select --monster --opponent (\\d+)$"),
+        SELECT_FIELD("^select --field"),
+        SELECT_HAND("^select --hand (\\d+)$"),
+        SELECT_MONSTER("^select --monster (\\d+)$"),
+        SELECT_SPELL("^select --spell (\\d+)$"),
+        SET("^set$"),
+        SET_POSITION("^set --position (attack|defense)$"),
+        SHOW_CARD("^card show --selected$"),
+        SHOW_GYARD("^show graveyard$"),
+        SHOW_MENU("^menu show-current$"),
+        SPELL_OPP("^select --spell --opponent (\\d+)$"),
+        SUMMON("^summon$"),
+        SURRENDER("^surrender$"),
+        END_PROGRAM("^end program$"),
+        ENTER_MENU("^menu enter$");
+
+
+        private Pattern commandPattern;
+
+        public Pattern getCommandPattern() {
+            return commandPattern;
+        }
+
+        public Matcher getStringMatcher(String input) {
+            return this.commandPattern.matcher(input);
+        }
+
+        DuelCommand(String commandPatternString) {
+            this.commandPattern = Pattern.compile(commandPatternString);
+        }
+    }
 }
 
-enum DuelCommand {
-    ACTIVE_EFFECT("^activate effect$"),
-    ATTACK("^attack ([1-5])$"),
-    BACK("^back$"),
-    DESELECT("^select -d$"),
-    DIRECT_ATTACK("^attack direct$"),
-    EXIT("^menu exit$"),
-    FIELD_OPP("^select --field --opponent$"),
-    FLIP("^flip-summon$"),
-    MONSTER_OPP("^select --monster --opponent ([1-5])$"),
-    SELECT_FIELD("^select --field"),
-    SELECT_HAND("^select --hand ([1-6])"),
-    SELECT_MONSTER("^select --monster ([1-5])$"),
-    SELECT_SPELL("^select --spell ([1-5])$"),
-    SET("^set$"),
-    SET_POSITION("^set --position (attack|defense)$"),
-    SHOW_CARD("^card show --selected$"),
-    SHOW_GYARD("^show graveyard$"),
-    SHOW_MENU("^menu show-current$"),
-    SPELL_OPP("^select --spell --opponent ([1-5])$"),
-    SUMMON("^summon$"),
-    SURRENDER("^surrender$"),
-    END_PROGRAM("^end program$"),
-    ENTER_MENU("^menu enter$");
-
-
-    private Pattern commandPattern;
-
-    public Pattern getCommandPattern() {
-        return commandPattern;
-    }
-
-    public Matcher getStringMatcher(String input) {
-        return this.commandPattern.matcher(input);
-    }
-
-    DuelCommand(String commandPatternString) {
-        this.commandPattern = Pattern.compile(commandPatternString);
-    }
-}

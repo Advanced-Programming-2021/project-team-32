@@ -1,5 +1,6 @@
 package app;
 
+import app.model.Battle.Battle;
 import app.model.Cards.Card;
 import app.model.Cards.Monster;
 import app.model.Cards.Spell;
@@ -19,6 +20,7 @@ public class DataCenter {
     private HashMap<String, Trap> traps;
     private HashMap<String, Card> cards;
     private User currentUser;
+    private Battle currentBattle;
 
     private DataCenter() {
         users = new HashMap<>();
@@ -95,5 +97,13 @@ public class DataCenter {
                 return true;
         }
         return false;
+    }
+
+    public Battle getCurrentBattle() {
+        return currentBattle;
+    }
+
+    public void setCurrentBattle(Battle currentBattle) {
+        this.currentBattle = currentBattle;
     }
 }

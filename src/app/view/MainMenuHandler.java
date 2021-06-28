@@ -6,32 +6,6 @@ import app.model.IllegalActionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum MainCommand {
-    SHOW_MENU("^menu show-current$"),
-    ENTER_MENU("^menu enter (Deck|Scoreboard|Profile|Shop)$"),
-    LOGOUT("^user logout$"),
-    EXIT("^menu exit$"),
-    NEW_DUEL("^duel new (?=.*--second -player (?<username>\\S+))(?=.*--rounds (?<round>[1-3]))"),
-    END_PROGRAM("^end program$");
-
-    private final Pattern commandPattern;
-
-    MainCommand(String commandPatternString) {
-
-        this.commandPattern = Pattern.compile(commandPatternString);
-    }
-
-    public Pattern getCommandPattern() {
-
-        return commandPattern;
-    }
-
-    public Matcher getStringMatcher(String input) {
-
-        return this.commandPattern.matcher(input);
-    }
-}
-
 public class MainMenuHandler implements MenuHandler {
 
     public MainMenuHandler() {
@@ -45,7 +19,7 @@ public class MainMenuHandler implements MenuHandler {
                 "2.menu enter <menu name> (Deck|Scoreboard|Profile|Shop)\n" +
                 "3.user logout\n" +
                 "4.menu exit\n"+
-                "5.end program\n";
+                "5.end program";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -56,7 +30,7 @@ public class MainMenuHandler implements MenuHandler {
         } else if ((matcher = MainCommand.LOGOUT.getStringMatcher(command)).find()) {
             controller.logout();
         }else if((matcher = MainCommand.NEW_DUEL.getStringMatcher(command)).find()){
-            controller.newDuel(matcher.group("username"));
+            controller.newDuel(matcher.group("username").trim(), Integer.parseInt(matcher.group("round")));
         }
         else if ((matcher = MainCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exitMain();
@@ -68,4 +42,31 @@ public class MainMenuHandler implements MenuHandler {
         }
         return true;
     }
+
+    enum MainCommand {
+        SHOW_MENU("^menu show-current$"),
+        ENTER_MENU("^menu enter (Deck|Scoreboard|Profile|Shop)$"),
+        LOGOUT("^user logout$"),
+        EXIT("^menu exit$"),
+        NEW_DUEL("^duel new (?=.*--second -player (?<username>(\\w+ *)+))(?=.*--rounds (?<round>\\d+))"),
+        END_PROGRAM("^end program$");
+
+        private final Pattern commandPattern;
+
+        MainCommand(String commandPatternString) {
+
+            this.commandPattern = Pattern.compile(commandPatternString);
+        }
+
+        public Pattern getCommandPattern() {
+
+            return commandPattern;
+        }
+
+        public Matcher getStringMatcher(String input) {
+
+            return this.commandPattern.matcher(input);
+        }
+    }
+
 }

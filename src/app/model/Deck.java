@@ -101,6 +101,8 @@ public class Deck {
         }
   }
     public int mainCardsContainsCard(String cardName) {
+        if (!mainCards.containsKey(cardName))
+            return 0;
         return mainCards.get(cardName);
     }
 
