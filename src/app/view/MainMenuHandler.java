@@ -19,7 +19,7 @@ public class MainMenuHandler implements MenuHandler {
                 "2.menu enter <menu name> (Deck|Scoreboard|Profile|Shop)\n" +
                 "3.user logout\n" +
                 "4.menu exit\n"+
-                "5.duel new --second-player <player2 username> --rounds <1/3>\n"+
+                "5.duel new --second-player|-sp <player2 username> --rounds|-rnd <1/3>\n"+
                 "6.import card [card name]\n"+
                 "7.export card [card name]\n"+
                 "8.end program";
@@ -57,7 +57,7 @@ public class MainMenuHandler implements MenuHandler {
         ENTER_MENU("^menu enter (Deck|Scoreboard|Profile|Shop)$"),
         LOGOUT("^user logout$"),
         EXIT("^menu exit$"),
-        NEW_DUEL("^duel new (?=.*--second -player (?<username>(\\w+ *)+))(?=.*--rounds (?<round>\\d+))"),
+        NEW_DUEL("^duel new (?=.*(--second-player|-sp) (?<username>(\\w+ *)+))(?=.*(--rounds|-rnd) (?<round>\\d+))"),
         END_PROGRAM("^end program$"),
         IMPORT("^import card ((\\w+ *)+)$"),
         EXPORT("^export card ((\\w+ *)+)$");

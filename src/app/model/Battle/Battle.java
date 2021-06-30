@@ -151,33 +151,52 @@ public class Battle {
             BattleCard[] monsterZone = battleField.getMonsterZone(turn % 2);
             return monsterZone[selectedAddress];
         }
-        if (selectType == SelectType.MONSTER_OPPONENT){
-            BattleCard[] monsterOpponent = battleField.getMonsterZone((turn+1)%2);
-            if (monsterOpponent[selectedAddress].getState() == State.DEFENSIVE_HIDDEN){
+        if (selectType == SelectType.MONSTER_OPPONENT) {
+            BattleCard[] monsterOpponent = battleField.getMonsterZone((turn + 1) % 2);
+            if (monsterOpponent[selectedAddress].getState() == State.DEFENSIVE_HIDDEN) {
                 throw new IllegalActionException("card is not visible");
             }
         }
-        if (selectType == SelectType.SELECT_SPELL){
-            BattleCard[] spellZone = battleField.getSpellZone(turn%2);
+        if (selectType == SelectType.SELECT_SPELL) {
+            BattleCard[] spellZone = battleField.getSpellZone(turn % 2);
             return spellZone[selectedAddress];
         }
-        if (selectType == SelectType.SPELL_OPPONENT){
-            BattleCard[] spellOpponent = battleField.getSpellZone((turn+1)%2);
-            if (spellOpponent[selectedAddress].getState() == State.HIDDEN){
+        if (selectType == SelectType.SPELL_OPPONENT) {
+            BattleCard[] spellOpponent = battleField.getSpellZone((turn + 1) % 2);
+            if (spellOpponent[selectedAddress].getState() == State.HIDDEN) {
                 throw new IllegalActionException("card is not visible");
             }
         }
-        if (selectType == SelectType.SELECT_FIELLD){
-            return battleField.getFieldZone(turn%2);
+        if (selectType == SelectType.SELECT_FIELLD) {
+            return battleField.getFieldZone(turn % 2);
         }
-        if (selectType == SelectType.FIELD_OPPONENT){
-            return battleField.getFieldZone((turn+1)%2);
+        if (selectType == SelectType.FIELD_OPPONENT) {
+            return battleField.getFieldZone((turn + 1) % 2);
         }
-        if (selectType == SelectType.SELECT_HAND){
+        if (selectType == SelectType.SELECT_HAND) {
             BattleCard[] handCard = getCurrentPlayer().getHandCards().toArray(new BattleCard[0]);
             return handCard[selectedAddress];
         }
         throw new IllegalActionException("no card is selected yet");
     }
 
+    public void changeMonsterState(String state) throws IllegalActionException {
+        BattleCard battleCard = getSelected();
+        if (selectType != SelectType.SELECT_MONSTER) {
+            throw new IllegalActionException("you can’t change this card position");
+        }
+
+        if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
+            throw new IllegalActionException("you can’t do this action in this phase");
+        }
+        if (state.equals("attack") && battleCard.getState() != State.DEFENSIVE_OCCUPIED) {
+
+            throw new IllegalActionException("this card is already in the wanted position");
+        }
+        if (state.equals("defense") && battleCard.getState() != State.OFFENSIVE_OCCUPIED) {
+            throw new IllegalActionException("this card is already in the wanted position");
+        }
+
+        battleCard.changeState(battleCard);
+    }
 }

@@ -11,10 +11,8 @@ import app.model.User;
 import app.view.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.logging.Handler;
 
 public class Controller {
     MenuHandler handler = new LoginMenuHandler();
@@ -334,7 +332,9 @@ public class Controller {
     public void set() {
     }
 
-    public void setPosition(String group) {
+    public void setPosition(String group) throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().changeMonsterState(group);
+        System.out.println("monster card position changed successfully");
     }
 
     public void showSelected() throws IllegalActionException {
@@ -360,6 +360,24 @@ public class Controller {
             i++;
         }
        }
+    }
+
+    public void opponentGraveYard() throws IllegalActionException {
+        handler = new GraveYardMenuHandler();
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard((turn+1)%2);
+        if (graveYard.size()==0){
+            throw new IllegalActionException("graveyard empty");
+        }
+        else {
+            int i = 1;
+            for (BattleCard battleCard :graveYard
+            ) {
+                Card card = battleCard.getCard();
+                System.out.println(i +". "+card.getName() + " : " + card.getDescription() + "\n");
+                i++;
+            }
+        }
     }
 
 

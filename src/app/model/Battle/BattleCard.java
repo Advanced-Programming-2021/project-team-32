@@ -30,4 +30,13 @@ public class BattleCard {
     public void setState(State state) {
         this.state = state;
     }
+
+    public void changeState(BattleCard battleCard){
+        if (battleCard.getState()==State.DEFENSIVE_OCCUPIED){
+            setState(State.OFFENSIVE_OCCUPIED);
+        }
+        if (battleCard.getState() == State.OFFENSIVE_OCCUPIED){
+            setState(State.OFFENSIVE_OCCUPIED);
+        }
+    }
 }

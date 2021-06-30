@@ -34,9 +34,10 @@ public class DuelMenuHandler implements MenuHandler {
                         "15.attack direct\n" +
                         "16.activate effect\n" +
                         "17.show graveyard\n" +
-                        "18.back\n" +
-                        "19.card show --selected\n" +
-                        "20.surrender\n" +
+                        "18.show graveyard --opponent\n"+
+                        "19.back\n" +
+                        "20.card show --selected\n" +
+                        "21.surrender\n" +
                         "21.menu exit";
 
         System.out.println(menuCommands);
@@ -82,8 +83,10 @@ public class DuelMenuHandler implements MenuHandler {
             controller.directAttack();
         } else if ((matcher = DuelCommand.ACTIVE_EFFECT.getStringMatcher(command)).find()) {
             controller.activeEffect();
-        } else if ((matcher = DuelCommand.SHOW_GRAYVEYARD.getStringMatcher(command)).find()) {
+        } else if ((matcher = DuelCommand.SHOW_GRAVEYARD.getStringMatcher(command)).find()) {
             controller.showGraveyard();
+        } else if ((matcher = DuelCommand.GRAVEYARD_OPP.getStringMatcher(command)).find()) {
+            controller.opponentGraveYard();
         }else if ((matcher = DuelMenuHandler.DuelCommand.CARD_SHOW.getStringMatcher(command)).find()) {
             controller.cardShow(matcher.group(1).trim());
         } else if ((matcher = DuelCommand.BACK.getStringMatcher(command)).find()) {
@@ -189,7 +192,8 @@ public class DuelMenuHandler implements MenuHandler {
         SET("^set$"),
         SET_POSITION("^set --position (attack|defense)$"),
         SHOW_SELECTED_CARD("^card show --selected$"),
-        SHOW_GRAYVEYARD("^show graveyard$"),
+        SHOW_GRAVEYARD("^show graveyard$"),
+        GRAVEYARD_OPP("^show graveyard --opponent$"),
         SHOW_MENU("^menu show-current$"),
         SPELL_OPP("^select --spell --opponent (\\d+)$"),
         SUMMON("^summon$"),

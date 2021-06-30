@@ -11,8 +11,8 @@ public class LoginMenuHandler implements MenuHandler {
     @Override
     public boolean handle(Controller controller) throws IllegalActionException {
         String menuCommands = "Login menu:\n" +
-                "1.user create --username <username> --nickname <nickname> --password <password>\n" +
-                "2.user login --username <username> --password <password>\n" +
+                "1.user create --username|-u <username> --nickname|-n <nickname> --password|-p <password>\n" +
+                "2.user login --username|-u <username> --password|-p <password>\n" +
                 "3.menu show-current\n" +
                 "4.menu enter\n"+
                 "5.menu exit\n"+
