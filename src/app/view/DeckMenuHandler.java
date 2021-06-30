@@ -45,7 +45,9 @@ public class DeckMenuHandler implements MenuHandler {
             boolean isSide = command.contains("--side");
             controller.showDeck(matcher.group("deckName").trim(), isSide);
         } else if ((matcher = DeckCommand.SHOW_CARD.getStringMatcher(command)).find()) {
-            controller.showCard();
+            controller.showCardDeckMenu();
+        }else if ((matcher = DeckMenuHandler.DeckCommand.CARD_SHOW.getStringMatcher(command)).find()) {
+            controller.cardShow(matcher.group(1).trim());
         } else if ((matcher = DeckCommand.EXIT.getStringMatcher(command)).find()) {
             controller.exit();
         } else if ((matcher = DeckCommand.ENTER_MENU.getStringMatcher(command)).find()) {
@@ -70,7 +72,9 @@ public class DeckMenuHandler implements MenuHandler {
         SHOW_CARD("^deck show --cards$"),
         EXIT("^menu exit$"),
         END_PROGRAM("^end program$"),
+        CARD_SHOW("^card show ((\\w+ *)+)$"),
         ENTER_MENU("^menu enter$");
+
         private Pattern commandPattern;
         public Pattern getCommandPattern() {
 

@@ -1,10 +1,20 @@
 package app.model.Battle;
 
 public enum State {
-    EMPTY,
-    DEFENSIVE_OCCUPIED,
-    DEFENSIVE_HIDDEN,
-    OFFENSIVE_OCCUPIED,
-    OCCUPIED,
-    HIDDEN;
+    EMPTY("E"),
+    DEFENSIVE_OCCUPIED("DO"),
+    DEFENSIVE_HIDDEN("DH"),
+    OFFENSIVE_OCCUPIED("OO"),
+    OCCUPIED("O"),
+    HIDDEN("H");
+
+    String s;
+
+    State(String s) {
+        this.s = s;
+    }
+
+    public String getS() {
+        return s;
+    }
 }

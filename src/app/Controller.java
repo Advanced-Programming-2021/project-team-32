@@ -2,7 +2,8 @@ package app;
 
 import app.model.Battle.Battle;
 import app.model.Battle.BattleCard;
-import app.model.CardTypes.CardType;
+import app.model.Battle.Phases;
+import app.model.Battle.SelectType;
 import app.model.Cards.Card;
 import app.model.Deck;
 import app.model.IllegalActionException;
@@ -10,7 +11,10 @@ import app.model.User;
 import app.view.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.logging.Handler;
 
 public class Controller {
     MenuHandler handler = new LoginMenuHandler();
@@ -161,23 +165,30 @@ public class Controller {
     }
 
     public void back() {
+        handler = new DuelMenuHandler();
     }
 
-    public void deselect() {
+    public void deselect() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().deselect();
+        System.out.println("card deselected");
     }
 
     public void directAttack() {
     }
 
     public void oppField() throws IllegalActionException {
-        BattleCard[] fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone();
-        if (fieldZone == null){
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone((turn + 1) % 2);
+        if (fieldZone == null) {
             throw new IllegalActionException("no card found in the given position");
         }
+        DataCenter.getInstance().getCurrentBattle().select(0, SelectType.FIELD_OPPONENT);
+        System.out.println("card selected");
     }
 
     public void flip() {
     }
+
     public void spellOpp(int group) throws IllegalActionException {
         if (group > 5 || group < 1) {
             throw new IllegalActionException("invalid selection");
@@ -200,10 +211,12 @@ public class Controller {
                 selectedAddress = 4;
         }
         int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
-        BattleCard[] spellZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getSpellZone(turn % 2);
+        BattleCard[] spellZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getSpellZone((turn + 1) % 2);
         if (spellZone[selectedAddress] == null) {
             throw new IllegalActionException("no card found in the given position");
         }
+        DataCenter.getInstance().getCurrentBattle().select(selectedAddress, SelectType.SPELL_OPPONENT);
+        System.out.println("card selected");
     }
 
     public void oppMonster(int group) throws IllegalActionException {
@@ -228,23 +241,34 @@ public class Controller {
                 selectedAddress = 4;
         }
         int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
-        BattleCard[] monsterZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getMonsterZone(turn % 2);
+        BattleCard[] monsterZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getMonsterZone((turn + 1) % 2);
         if (monsterZone[selectedAddress] == null) {
             throw new IllegalActionException("no card found in the given position");
         }
-
+        DataCenter.getInstance().getCurrentBattle().select(selectedAddress, SelectType.MONSTER_OPPONENT);
+        System.out.println("card selected");
     }
 
     public void selectField() throws IllegalActionException {
-        BattleCard[] fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone();
-        if (fieldZone == null){
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        BattleCard fieldZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getFieldZone(turn % 2);
+        if (fieldZone == null) {
             throw new IllegalActionException("no card found in the given position");
         }
-
+        DataCenter.getInstance().getCurrentBattle().select(0, SelectType.SELECT_FIELLD);
+        System.out.println("card selected");
     }
 
-    public void selectHand(String group) throws IllegalActionException {
-
+    public void selectHand(int group) throws IllegalActionException {
+        if (group > 6 || group < 1) {
+            throw new IllegalActionException("invalid selection");
+        }
+        ArrayList<BattleCard> battleCards = DataCenter.getInstance().getCurrentBattle().getCurrentPlayer().getHandCards();
+        if (battleCards.size() <= group) {
+            throw new IllegalActionException("no card found in the given position");
+        }
+        DataCenter.getInstance().getCurrentBattle().select(group, SelectType.SELECT_HAND);
+        System.out.println("card selected");
     }
 
     public void selectSpell(int group) throws IllegalActionException {
@@ -273,6 +297,8 @@ public class Controller {
         if (spellZone[selectedAddress] == null) {
             throw new IllegalActionException("no card found in the given position");
         }
+        DataCenter.getInstance().getCurrentBattle().select(selectedAddress, SelectType.SELECT_SPELL);
+        System.out.println("card selected");
     }
 
     public void selectMonster(int group) throws IllegalActionException {
@@ -301,6 +327,8 @@ public class Controller {
         if (monsterZone[selectedAddress] == null) {
             throw new IllegalActionException("no card found in the given position");
         }
+        DataCenter.getInstance().getCurrentBattle().select(selectedAddress, SelectType.SELECT_MONSTER);
+        System.out.println("card selected");
     }
 
     public void set() {
@@ -309,15 +337,34 @@ public class Controller {
     public void setPosition(String group) {
     }
 
-    public void showCard() {
+    public void showSelected() throws IllegalActionException {
+        BattleCard battleCard =DataCenter.getInstance().getCurrentBattle().getSelected();
+        Card card = battleCard.getCard();
+        System.out.println(card.toString());
+
     }
 
-    public void showGyard() {
+    public void showGraveyard() throws IllegalActionException {
+        handler = new GraveYardMenuHandler();
+       int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+       ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard(turn%2);
+       if (graveYard.size()==0){
+           throw new IllegalActionException("graveyard empty");
+       }
+       else {
+           int i = 1;
+       for (BattleCard battleCard :graveYard
+             ) {
+            Card card = battleCard.getCard();
+            System.out.println(i +". "+card.getName() + " : " + card.getDescription() + "\n");
+            i++;
+        }
+       }
     }
 
 
-
-    public void summon() {
+    public void summon() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().summon();
     }
 
     public void surrender() {
@@ -389,7 +436,7 @@ public class Controller {
             throw new IllegalActionException("there is no player with this username");
         }
         User secondPlayer = d.getUser(username);
-        if (round > 3 || round < 1) {
+        if (round != 3 && round != 1) {
             throw new IllegalActionException("number of rounds is not supported");
         }
         if (currentUser.getActiveDeck() == null || !currentUser.getActiveDeck().isDeckValid()) {
@@ -399,6 +446,33 @@ public class Controller {
             throw new IllegalActionException(username + "’s deck is invalid");
         }
         d.setCurrentBattle(new Battle(currentUser, secondPlayer, round));
-        handler = new DuelMenuHandler();
+        DuelMenuHandler h = new DuelMenuHandler();
+        h.printBattle(d.getCurrentBattle());
+        handler = h;
+    }
+
+    public void export(String cardName) throws IllegalActionException {
+        DataCenter.getInstance().export(cardName);
+        System.out.println("card exported successfully");
+    }
+
+    public void importCard(String cardName) throws IllegalActionException {
+        DataCenter.getInstance().importCard(cardName);
+        System.out.println("card imported successfully");
+    }
+
+    public void showCardDeckMenu() {
+        User user = DataCenter.getInstance().getCurrentUser();
+        HashMap<String, Integer> cards = user.getCards();
+        ArrayList<String> cardNames = new ArrayList<>(cards.keySet());
+        Collections.sort(cardNames);
+        for (String cardName : cardNames) {
+            Card card = DataCenter.getInstance().getCard(cardName);
+            System.out.println(cardName+":"+card.getDescription());
+        }
+    }
+
+    public Phases nextPhase() {
+        return DataCenter.getInstance().getCurrentBattle().nextPhase();
     }
 }

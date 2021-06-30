@@ -49,6 +49,10 @@ public class User {
         this.score += score;
     }
 
+    public void increaseBalance(int balance) {
+        this.balance += balance;
+    }
+
     public void decreaseScore(int score) {
         this.score -= score;
     }
@@ -158,5 +162,9 @@ public class User {
         }
         if (notInADeck == null)
             notInADeck = new Deck("notInADeck", Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    public HashMap<String, Integer> getCards() {
+        return cards;
     }
 }

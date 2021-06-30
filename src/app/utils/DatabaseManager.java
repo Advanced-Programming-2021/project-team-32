@@ -57,7 +57,7 @@ public class DatabaseManager {
                 return null;
             for (String path : files) {
                 String monsterJson = readFileAsString(pathToMonsters + path);
-                Monster monster= new Gson().fromJson(monsterJson, Monster.class);
+                Monster monster = new Gson().fromJson(monsterJson, Monster.class);
                 monsters.put(monster.getName(), monster);
             }
         } catch (NullPointerException | IOException e) {
@@ -75,7 +75,7 @@ public class DatabaseManager {
                 return null;
             for (String path : files) {
                 String trapJson = readFileAsString(pathToTraps + path);
-                Trap trap= new Gson().fromJson(trapJson, Trap.class);
+                Trap trap = new Gson().fromJson(trapJson, Trap.class);
                 traps.put(trap.getName(), trap);
             }
         } catch (NullPointerException | IOException e) {
@@ -84,6 +84,7 @@ public class DatabaseManager {
         return traps;
 
     }
+
     public static HashMap<String, Spell> loadSpells() { //Name,Type ,Icon (Property),Description,Status,Price
         HashMap<String, Spell> spells = new HashMap<>();
         File file = new File(pathToSpells);
@@ -119,7 +120,7 @@ public class DatabaseManager {
 
     }
 
-    public static void storeMonsters(HashMap<String,Monster> monsters) {
+    public static void storeMonsters(HashMap<String, Monster> monsters) {
         for (String monsterName : monsters.keySet()
         ) {
             Monster monster = monsters.get(monsterName);
@@ -163,5 +164,40 @@ public class DatabaseManager {
         }
 
     }
+
+    public static Card importCard(String cardName) {
+        String cardJson = null;
+        try {
+            cardJson = readFileAsString("resources/import/" + cardName+".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Card card = new Gson().fromJson(cardJson, Card.class);
+
+        switch (card.getType()){
+            case MONSTER:
+                card = new Gson().fromJson(cardJson, Monster.class);
+                break;
+            case SPELL:
+                card = new Gson().fromJson(cardJson, Spell.class);
+                break;
+            case TRAP:
+                card = new Gson().fromJson(cardJson, Trap.class);
+                break;
+        }
+
+        return card;
+    }
+
+    public static void exportCard(Card card) {
+        Gson gson = new Gson();
+        String cardJson = gson.toJson(card);
+        Path path = Paths.get("resources/export/" + card.getName() + ".json");
+        try {
+            Files.write(path, cardJson.getBytes());
+        } catch (IOException ignored) {
+        }
+    }
+
 
 }

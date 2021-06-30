@@ -1,33 +1,39 @@
 package app.model.Battle;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BattleField {
-    private List<ArrayList<BattleCard>> graveYard = new ArrayList<>(2);
-    private BattleCard[] fieldZone = new BattleCard[2];
-    private List<BattleCard[]> monsterCards = new ArrayList<>(2);
-    private List<BattleCard[]> spellTrapCards = new ArrayList<>(2);
-
-    public BattleField() {
-        graveYard.add(new ArrayList<>());
-        graveYard.add(new ArrayList<>());
-        monsterCards.add(new BattleCard[5]);
-        monsterCards.add(new BattleCard[5]);
-        spellTrapCards.add(new BattleCard[5]);
-        spellTrapCards.add(new BattleCard[5]);
-    }
+    private ArrayList<BattleCard> graveYard0 = new ArrayList<>();
+    private ArrayList<BattleCard> graveYard1 = new ArrayList<>();
+    private BattleCard fieldZone0;
+    private BattleCard fieldZone1;
+    private BattleCard[] monsterCards0 = new BattleCard[5];
+    private BattleCard[] monsterCards1 = new BattleCard[5];
+    private BattleCard[] spellTrapCards0 = new BattleCard[5];
+    private BattleCard[] spellTrapCards1 = new BattleCard[5];
 
 
     public BattleCard[] getMonsterZone(int i) {
-        return monsterCards.get(i);
+        if (i == 0)
+            return monsterCards0;
+        return monsterCards1;
     }
 
     public BattleCard[] getSpellZone(int i) {
-        return spellTrapCards.get(i);
+        if (i == 0)
+            return spellTrapCards0;
+        return spellTrapCards1;
     }
 
-    public BattleCard[] getFieldZone() {
-        return fieldZone;
+    public BattleCard getFieldZone(int i) {
+      if (i == 0)
+        return fieldZone0;
+      return fieldZone1;
+    }
+
+    public ArrayList<BattleCard> getGraveYard(int i) {
+        if (i == 0)
+            return graveYard0;
+        return graveYard1;
     }
 }

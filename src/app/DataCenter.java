@@ -1,10 +1,12 @@
 package app;
 
 import app.model.Battle.Battle;
+import app.model.CardTypes.CardType;
 import app.model.Cards.Card;
 import app.model.Cards.Monster;
 import app.model.Cards.Spell;
 import app.model.Cards.Trap;
+import app.model.IllegalActionException;
 import app.model.User;
 import app.utils.DatabaseManager;
 
@@ -105,5 +107,34 @@ public class DataCenter {
 
     public void setCurrentBattle(Battle currentBattle) {
         this.currentBattle = currentBattle;
+    }
+
+    public Card getCard(String cardName) {
+        return cards.get(cardName);
+    }
+
+    public void export(String cardName) throws IllegalActionException {
+        if (!cards.containsKey(cardName)) {
+            throw new IllegalActionException("there is no card with this name");
+        }
+        DatabaseManager.exportCard(cards.get(cardName));
+    }
+
+    public void importCard(String cardName) throws IllegalActionException {
+        if (cards.containsKey(cardName)) {
+            throw new IllegalActionException("there is a card with this name");
+        }
+        Card c = DatabaseManager.importCard(cardName);
+        cards.put(c.getName(), c);
+        if (c.getType() == CardType.TRAP)
+            traps.put(c.getName(), (Trap) c);
+        if (c.getType() == CardType.MONSTER) {
+            assert c instanceof Monster;
+            monsters.put(c.getName(), (Monster) c);
+        }
+        if (c.getType() == CardType.SPELL) {
+            assert c instanceof Spell;
+            spells.put(c.getName(), (Spell) c);
+        }
     }
 }

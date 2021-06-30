@@ -19,7 +19,10 @@ public class MainMenuHandler implements MenuHandler {
                 "2.menu enter <menu name> (Deck|Scoreboard|Profile|Shop)\n" +
                 "3.user logout\n" +
                 "4.menu exit\n"+
-                "5.end program";
+                "5.duel new --second-player <player2 username> --rounds <1/3>\n"+
+                "6.import card [card name]\n"+
+                "7.export card [card name]\n"+
+                "8.end program";
         System.out.println(menuCommands);
         String command = UserCommandGetter.getUserCommand();
         Matcher matcher;
@@ -37,6 +40,12 @@ public class MainMenuHandler implements MenuHandler {
         }   else if ((matcher = MainCommand.END_PROGRAM.getStringMatcher(command)).find()){
             return false;
         }
+        else if ((matcher = MainCommand.EXPORT.getStringMatcher(command)).find()){
+            controller.export(matcher.group(1).trim());
+        }
+        else if ((matcher = MainCommand.IMPORT.getStringMatcher(command)).find()){
+            controller.importCard(matcher.group(1).trim());
+        }
         else {
             System.out.println("invalid command");
         }
@@ -49,7 +58,9 @@ public class MainMenuHandler implements MenuHandler {
         LOGOUT("^user logout$"),
         EXIT("^menu exit$"),
         NEW_DUEL("^duel new (?=.*--second -player (?<username>(\\w+ *)+))(?=.*--rounds (?<round>\\d+))"),
-        END_PROGRAM("^end program$");
+        END_PROGRAM("^end program$"),
+        IMPORT("^import card ((\\w+ *)+)$"),
+        EXPORT("^export card ((\\w+ *)+)$");
 
         private final Pattern commandPattern;
 

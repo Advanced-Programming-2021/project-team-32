@@ -7,6 +7,7 @@ import java.util.Random;
 public class BattleCard {
     private static final Random rand = new Random();
     private final String id;
+    private State state;
     private final Card card;
 
     public BattleCard(String username, Card card) {
@@ -20,5 +21,13 @@ public class BattleCard {
 
     public Card getCard() {
         return card;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }
