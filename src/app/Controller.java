@@ -329,7 +329,8 @@ public class Controller {
         System.out.println("card selected");
     }
 
-    public void set() {
+    public void setMonster() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().setMonster();
     }
 
     public void setPosition(String group) throws IllegalActionException {

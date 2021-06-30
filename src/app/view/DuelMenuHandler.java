@@ -27,7 +27,7 @@ public class DuelMenuHandler implements MenuHandler {
                         "8.select --hand <number>\n" +
                         "9.select -d\n" +
                         "10.summon\n" +
-                        "11.set\n" +
+                        "11.set monster\n" +
                         "12.set --position attack/defense\n" +
                         "13.flip-summon\n" +
                         "14.attack <number>\n" +
@@ -71,8 +71,8 @@ public class DuelMenuHandler implements MenuHandler {
             if (phase == Phases.DRAW) {
                 printBattle(DataCenter.getInstance().getCurrentBattle());
             }
-        } else if ((matcher = DuelCommand.SET.getStringMatcher(command)).find()) {
-            controller.set();
+        } else if ((matcher = DuelCommand.SET_MONSTER.getStringMatcher(command)).find()) {
+            controller.setMonster();
         } else if ((matcher = DuelCommand.SET_POSITION.getStringMatcher(command)).find()) {
             controller.setPosition(matcher.group(1));
         } else if ((matcher = DuelCommand.FLIP.getStringMatcher(command)).find()) {
@@ -189,7 +189,7 @@ public class DuelMenuHandler implements MenuHandler {
         SELECT_HAND("^select --hand (\\d+)$"),
         SELECT_MONSTER("^select --monster (\\d+)$"),
         SELECT_SPELL("^select --spell (\\d+)$"),
-        SET("^set$"),
+        SET_MONSTER("^set monster$"),
         SET_POSITION("^set --position (attack|defense)$"),
         SHOW_SELECTED_CARD("^card show --selected$"),
         SHOW_GRAVEYARD("^show graveyard$"),

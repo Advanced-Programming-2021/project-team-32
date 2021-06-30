@@ -102,6 +102,9 @@ public class Battle {
                 handCards.remove(selectedAddress);
             }
         }
+        selectedCard.setState(State.OFFENSIVE_OCCUPIED);
+
+        hasSetOrSummon = true;
 
     }
 
@@ -181,7 +184,7 @@ public class Battle {
     }
 
     public void changeMonsterState(String state) throws IllegalActionException {
-        BattleCard battleCard = getSelected();
+        BattleCard selectedCard = getSelected();
         if (selectType != SelectType.SELECT_MONSTER) {
             throw new IllegalActionException("you can’t change this card position");
         }
@@ -189,14 +192,54 @@ public class Battle {
         if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
             throw new IllegalActionException("you can’t do this action in this phase");
         }
-        if (state.equals("attack") && battleCard.getState() != State.DEFENSIVE_OCCUPIED) {
+        if (selectedCard.isHasStateChanged()){
+            throw new IllegalActionException("you already changed this card position in this turn");
+        }
+        if (state.equals("attack") && selectedCard.getState() != State.DEFENSIVE_OCCUPIED) {
 
             throw new IllegalActionException("this card is already in the wanted position");
         }
-        if (state.equals("defense") && battleCard.getState() != State.OFFENSIVE_OCCUPIED) {
+        if (state.equals("defense") && selectedCard.getState() != State.OFFENSIVE_OCCUPIED) {
             throw new IllegalActionException("this card is already in the wanted position");
         }
 
-        battleCard.changeState(battleCard);
+        selectedCard.changeState(selectedCard);
+        selectedCard.setHasStateChanged(true);
     }
+
+      public void setMonster() throws IllegalActionException {
+          if (selectType == null) {
+              throw new IllegalActionException("no card is selected yet");
+          }
+          if (selectType != SelectType.SELECT_HAND) {
+              throw new IllegalActionException("you can’t set this card");
+          }
+
+          if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
+              throw new IllegalActionException("you can’t do this action in this phase");
+          }
+          ArrayList<BattleCard> handCards = getCurrentPlayer().getHandCards();
+          BattleCard selectedCard = handCards.get(selectedAddress);
+          if (selectedCard.getCard().getType() != CardType.MONSTER) {
+              throw new IllegalActionException("you can’t set this card");
+          }
+          BattleCard[] monsterZone = battleField.getMonsterZone(turn % 2);
+          if (!hasCapacity(monsterZone)) {
+              throw new IllegalActionException("monster card zone is full");
+          }
+          if (hasSetOrSummon) {
+              throw new IllegalActionException("you already summoned/set on this turn");
+          }
+
+          for (int i = 0; i < 5; i++) {
+              if (monsterZone[i] == null) {
+                  monsterZone[i] = selectedCard;
+                  handCards.remove(selectedAddress);
+              }
+
+          }
+          selectedCard.setState(State.DEFENSIVE_HIDDEN);
+          hasSetOrSummon = true;
+
+      }
 }

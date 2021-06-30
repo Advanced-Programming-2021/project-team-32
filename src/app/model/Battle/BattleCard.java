@@ -9,6 +9,7 @@ public class BattleCard {
     private final String id;
     private State state;
     private final Card card;
+    private boolean hasStateChanged;
 
     public BattleCard(String username, Card card) {
         this.id = username + "-" + card.getName() + "-" + rand.nextInt(10000000);
@@ -38,5 +39,13 @@ public class BattleCard {
         if (battleCard.getState() == State.OFFENSIVE_OCCUPIED){
             setState(State.OFFENSIVE_OCCUPIED);
         }
+    }
+
+    public boolean isHasStateChanged() {
+        return hasStateChanged;
+    }
+
+    public void setHasStateChanged(boolean hasStateChanged) {
+        this.hasStateChanged = hasStateChanged;
     }
 }
