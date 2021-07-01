@@ -22,8 +22,6 @@ public class GraveYardMenuHandler implements MenuHandler{
         else {
             System.out.println("invalid command");
         }
-
-
         return true;
     }
     enum GraveYardCommand {

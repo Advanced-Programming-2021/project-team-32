@@ -36,4 +36,11 @@ public class BattleField {
             return graveYard0;
         return graveYard1;
     }
+
+    public void addToGraveYard(int i,BattleCard battleCard) {
+        if (i == 0)
+            graveYard0.add(battleCard);
+        else
+            graveYard1.add(battleCard);
+    }
 }

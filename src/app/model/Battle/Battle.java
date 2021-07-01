@@ -354,4 +354,22 @@ public class Battle {
         hasSetOrSummon = true;
         deselect();
     }
+
+    public void surrender() {
+        winGame((turn + 1) % 2);
+    }
+
+    public void killSelected() {
+        if (selectType == SelectType.MONSTER_OPPONENT) {
+            BattleCard[] monsterOpponent = battleField.getMonsterZone((turn + 1) % 2);
+            battleField.addToGraveYard((turn + 1) % 2, monsterOpponent[selectedAddress]);
+            monsterOpponent[selectedAddress] = null;
+        }
+        if (selectType == SelectType.SELECT_MONSTER) {
+            BattleCard[] monsterZone = battleField.getMonsterZone(turn % 2);
+            battleField.addToGraveYard(turn % 2, monsterZone[selectedAddress]);
+            monsterZone[selectedAddress] = null;
+        }
+        System.out.println("card added to graveyard successfully");
+    }
 }

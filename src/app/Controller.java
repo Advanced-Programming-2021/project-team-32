@@ -4,6 +4,7 @@ import app.model.Battle.Battle;
 import app.model.Battle.BattleCard;
 import app.model.Battle.Phases;
 import app.model.Battle.SelectType;
+import app.model.CardTypes.CardType;
 import app.model.Cards.Card;
 import app.model.Deck;
 import app.model.IllegalActionException;
@@ -197,16 +198,16 @@ public class Controller {
                 selectedAddress = 2;
                 break;
             case 2:
-                selectedAddress = 1;
-                break;
-            case 3:
                 selectedAddress = 3;
                 break;
+            case 3:
+                selectedAddress = 1;
+                break;
             case 4:
-                selectedAddress = 0;
+                selectedAddress = 4;
                 break;
             default:
-                selectedAddress = 4;
+                selectedAddress = 0;
         }
         int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
         BattleCard[] spellZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getSpellZone((turn + 1) % 2);
@@ -227,16 +228,16 @@ public class Controller {
                 selectedAddress = 2;
                 break;
             case 2:
-                selectedAddress = 1;
-                break;
-            case 3:
                 selectedAddress = 3;
                 break;
+            case 3:
+                selectedAddress = 1;
+                break;
             case 4:
-                selectedAddress = 0;
+                selectedAddress = 4;
                 break;
             default:
-                selectedAddress = 4;
+                selectedAddress = 0;
         }
         int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
         BattleCard[] monsterZone = DataCenter.getInstance().getCurrentBattle().getBattleField().getMonsterZone((turn + 1) % 2);
@@ -258,7 +259,7 @@ public class Controller {
     }
 
     public void selectHand(int group) throws IllegalActionException {
-        group --;
+        group--;
         if (group > 5 || group < 0) {
             throw new IllegalActionException("invalid selection");
         }
@@ -379,9 +380,19 @@ public class Controller {
 
     public void summon() throws IllegalActionException {
         DataCenter.getInstance().getCurrentBattle().summon();
+        System.out.println("summoned successfully");
     }
 
     public void surrender() {
+        DataCenter.getInstance().getCurrentBattle().surrender();
+        DataCenter.getInstance().setCurrentBattle(null);
+        handler = new MainMenuHandler();
+    }
+
+    public void winByCheat(int i) {
+        DataCenter.getInstance().getCurrentBattle().winGame(i);
+        DataCenter.getInstance().setCurrentBattle(null);
+        handler = new MainMenuHandler();
     }
 
     public void createDeck(String group) throws IllegalActionException {
@@ -427,8 +438,38 @@ public class Controller {
     }
 
     public void showDeck(String deckName, boolean side) {
-        ArrayList<Card> monsters;
-        ArrayList<Card> spstrps;
+        User u = DataCenter.getInstance().getCurrentUser();
+        for (Deck deck : u.getAllDecks()) {
+            if (deck.getName().equals(deckName)) {
+                HashMap<String, Integer> cards;
+                if (side) {
+                    cards = deck.getMainCards();
+                } else {
+                    cards = deck.getSideCards();
+                }
+                ArrayList<Card> monsters = new ArrayList<>();
+                ArrayList<Card> spstrps = new ArrayList<>();
+                for (String cardName : cards.keySet()) {
+                    Card card = DataCenter.getInstance().getCard(cardName);
+                    if (card.getType() == CardType.MONSTER) {
+                        monsters.add(card);
+                    } else {
+                        spstrps.add(card);
+                    }
+                }
+                System.out.println("Deck: " + deckName);
+                System.out.println(side ? "Side" : "Main" + "deck:");
+                System.out.println("Monsters:");
+                for (Card c : monsters) {
+                    System.out.println(c.getName()+" : "+c.getDescription());
+                }
+                System.out.println("Spell and Traps:");
+                for (Card c : spstrps) {
+                    System.out.println(c.getName()+" : "+c.getDescription());
+                }
+                return;
+            }
+        }
 
     }
 
@@ -504,5 +545,17 @@ public class Controller {
     public void setTrap() throws IllegalActionException {
         DataCenter.getInstance().getCurrentBattle().setTrap();
         System.out.println("set successfully");
+    }
+
+    public void increaseLP(int parseInt) {
+        DataCenter.getInstance().getCurrentBattle().getCurrentPlayer().increaseLP(parseInt);
+    }
+
+    public void increaseMoney(int parseInt) {
+        DataCenter.getInstance().getCurrentBattle().getCurrentPlayer().getUser().increaseBalance(parseInt);
+    }
+
+    public void killSelected() {
+        DataCenter.getInstance().getCurrentBattle().killSelected();
     }
 }

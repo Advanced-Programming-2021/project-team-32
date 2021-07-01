@@ -107,6 +107,14 @@ public class DuelMenuHandler implements MenuHandler {
             return false;
         } else if ((matcher = DuelCommand.SURRENDER.getStringMatcher(command)).find()) {
             controller.surrender();
+        } else if ((matcher = DuelCommand.WIN_CHEAT.getStringMatcher(command)).find()) {
+            controller.winByCheat(Integer.parseInt(matcher.group(1)));
+        } else if ((matcher = DuelCommand.KILL_CHEAT.getStringMatcher(command)).find()) {
+            controller.killSelected();
+        } else if ((matcher = DuelCommand.INCREASE_LP.getStringMatcher(command)).find()) {
+            controller.increaseLP(Integer.parseInt(matcher.group(1)));
+        }else if ((matcher = DuelCommand.INCREASE_MONEY.getStringMatcher(command)).find()) {
+            controller.increaseMoney(Integer.parseInt(matcher.group(1)));
         } else {
             System.out.println("invalid command");
         }
@@ -213,6 +221,10 @@ public class DuelMenuHandler implements MenuHandler {
         END_PROGRAM("^end program$"),
         CARD_SHOW("^card show ((\\w+ *)+)$"),
         showbattlefield("^show battlefield$"),
+        INCREASE_LP("^increase --LP (\\d+)$"),
+        INCREASE_MONEY("^increase --money (\\d+)$"),
+        WIN_CHEAT("^cheat win (\\d)$"),
+        KILL_CHEAT("^cheat kill selected$"),
         ENTER_MENU("^menu enter$");
 
 

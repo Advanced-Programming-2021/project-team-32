@@ -37,7 +37,7 @@ public class BattleCard {
             setState(State.OFFENSIVE_OCCUPIED);
         }
         if (battleCard.getState() == State.OFFENSIVE_OCCUPIED){
-            setState(State.OFFENSIVE_OCCUPIED);
+            setState(State.DEFENSIVE_OCCUPIED);
         }
     }
 
