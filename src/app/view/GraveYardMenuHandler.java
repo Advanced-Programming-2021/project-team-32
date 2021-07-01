@@ -24,7 +24,7 @@ public class GraveYardMenuHandler implements MenuHandler{
         }
 
 
-        return false;
+        return true;
     }
     enum GraveYardCommand {
         BACK("^back$");

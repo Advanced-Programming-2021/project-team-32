@@ -258,7 +258,8 @@ public class Controller {
     }
 
     public void selectHand(int group) throws IllegalActionException {
-        if (group > 6 || group < 1) {
+        group --;
+        if (group > 5 || group < 0) {
             throw new IllegalActionException("invalid selection");
         }
         ArrayList<BattleCard> battleCards = DataCenter.getInstance().getCurrentBattle().getCurrentPlayer().getHandCards();
@@ -329,9 +330,6 @@ public class Controller {
         System.out.println("card selected");
     }
 
-    public void setMonster() throws IllegalActionException {
-        DataCenter.getInstance().getCurrentBattle().setMonster();
-    }
 
     public void setPosition(String group) throws IllegalActionException {
         DataCenter.getInstance().getCurrentBattle().changeMonsterState(group);
@@ -339,7 +337,7 @@ public class Controller {
     }
 
     public void showSelected() throws IllegalActionException {
-        BattleCard battleCard =DataCenter.getInstance().getCurrentBattle().getSelected();
+        BattleCard battleCard = DataCenter.getInstance().getCurrentBattle().getSelected();
         Card card = battleCard.getCard();
         System.out.println(card.toString());
 
@@ -347,35 +345,32 @@ public class Controller {
 
     public void showGraveyard() throws IllegalActionException {
         handler = new GraveYardMenuHandler();
-       int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
-       ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard(turn%2);
-       if (graveYard.size()==0){
-           throw new IllegalActionException("graveyard empty");
-       }
-       else {
-           int i = 1;
-       for (BattleCard battleCard :graveYard
-             ) {
-            Card card = battleCard.getCard();
-            System.out.println(i +". "+card.getName() + " : " + card.getDescription() + "\n");
-            i++;
+        int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
+        ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard(turn % 2);
+        if (graveYard.size() == 0) {
+            throw new IllegalActionException("graveyard empty");
+        } else {
+            int i = 1;
+            for (BattleCard battleCard : graveYard) {
+                Card card = battleCard.getCard();
+                System.out.println(i + ". " + card.getName() + " : " + card.getDescription() + "\n");
+                i++;
+            }
         }
-       }
     }
 
     public void opponentGraveYard() throws IllegalActionException {
         handler = new GraveYardMenuHandler();
         int turn = DataCenter.getInstance().getCurrentBattle().getTurn();
-        ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard((turn+1)%2);
-        if (graveYard.size()==0){
+        ArrayList<BattleCard> graveYard = DataCenter.getInstance().getCurrentBattle().getBattleField().getGraveYard((turn + 1) % 2);
+        if (graveYard.size() == 0) {
             throw new IllegalActionException("graveyard empty");
-        }
-        else {
+        } else {
             int i = 1;
-            for (BattleCard battleCard :graveYard
+            for (BattleCard battleCard : graveYard
             ) {
                 Card card = battleCard.getCard();
-                System.out.println(i +". "+card.getName() + " : " + card.getDescription() + "\n");
+                System.out.println(i + ". " + card.getName() + " : " + card.getDescription() + "\n");
                 i++;
             }
         }
@@ -487,11 +482,27 @@ public class Controller {
         Collections.sort(cardNames);
         for (String cardName : cardNames) {
             Card card = DataCenter.getInstance().getCard(cardName);
-            System.out.println(cardName+":"+card.getDescription());
+            System.out.println(cardName + ":" + card.getDescription());
         }
     }
 
     public Phases nextPhase() {
         return DataCenter.getInstance().getCurrentBattle().nextPhase();
+    }
+
+
+    public void setMonster() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().setMonster();
+        System.out.println("set successfully");
+    }
+
+    public void setSpell() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().setSpell();
+        System.out.println("set successfully");
+    }
+
+    public void setTrap() throws IllegalActionException {
+        DataCenter.getInstance().getCurrentBattle().setTrap();
+        System.out.println("set successfully");
     }
 }

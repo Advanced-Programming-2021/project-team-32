@@ -13,8 +13,8 @@ public class ProfileMenuHandler implements MenuHandler {
     public boolean handle(Controller controller) throws IllegalActionException {
         String menuCommands = "Profile menu:\n" +
                 "1.menu show-current\n" +
-                "2.profile change --nickname <nickname>\n" +
-                "3.profile change --password --current <current password> --new <new password>\n" +
+                "2.profile change --nickname|-n <nickname>\n" +
+                "3.profile change --password|-p --current|-cu <current password> --new|-nw <new password>\n" +
                 "4.menu exit\n"+
                 "5.end program";
         System.out.println(menuCommands);
@@ -43,8 +43,8 @@ public class ProfileMenuHandler implements MenuHandler {
 
     enum ProfileCommand {
         SHOW_MENU("^menu show-current$"),
-        CHANGE_NICKNAME("^profile change --nickname (?<nickname>\\S+)$"),
-        CHANGE_PASSWORD("^profile change (?=.*--password)(?=.*--current (?<cp>\\S+))(?=.*--new (?<password>\\S+))"),
+        CHANGE_NICKNAME("^profile change (?=.*(--nickname|-n) (?<nickname>\\S+))"),
+        CHANGE_PASSWORD("^profile change (?=.*(--password|-p))(?=.*(--current|-cu) (?<cp>\\S+))(?=.*(--new|-nw) (?<password>\\S+))"),
         SHOW_USER("^profile show"),
         EXIT("^menu exit$"),
         END_PROGRAM("^end program$"),

@@ -33,7 +33,7 @@ public class Spell extends Card{
     public String toString() {
         return   "Name: "+ name + "\n" +
                   type + "\n"+
-                 "Type"+ icon + "\n"+
+                 "Type:"+ icon + "\n"+
                  "Description: " + description + "\n";
     }
 }

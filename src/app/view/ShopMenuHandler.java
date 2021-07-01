@@ -14,7 +14,7 @@ public class ShopMenuHandler implements MenuHandler {
         String menuCommands = "Shop menu:\n" +
                 "1.menu show-current\n" +
                 "2.shop buy <card name>\n" +
-                "3.shop show --all\n" +
+                "3.shop show --all|-al\n" +
                 "4.show card <card name>\n" +
                 "5.menu exit\n" +
                 "6.end program";
@@ -46,7 +46,7 @@ public class ShopMenuHandler implements MenuHandler {
         SHOW_MENU("^menu show-current$"),
         BUY_CARD("^shop buy ((\\w+ *)+)$"),
         CARD_SHOW("^card show ((\\w+ *)+)$"),
-        SHOW_SHOP("^shop show --all$"),
+        SHOW_SHOP("^shop show (?=.*(--all|-al))"),
         EXIT("^menu exit$"),
         END_PROGRAM("^end program$"),
         ENTER_MENU("^menu enter$");

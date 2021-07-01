@@ -30,7 +30,7 @@ public class Trap extends Card {
 
             return   "Name: "+ name + "\n" +
                       type + "\n"+
-                     "Type"+ icon + "\n"+
+                     "Type:"+ icon + "\n"+
                      "Description: " + description + "\n";
         }
     }

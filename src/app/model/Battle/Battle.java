@@ -7,6 +7,7 @@ import app.model.IllegalActionException;
 import app.model.User;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Battle {
     private final int rounds;
@@ -22,10 +23,18 @@ public class Battle {
     private BattleCard battleCard;
 
     public Battle(User currentUser, User secondPlayer, int round) {
-        player0 = new Player(8000, currentUser);
-        player1 = new Player(8000, secondPlayer);
+        Random random = new Random();
+        if (random.nextInt() % 2 == 0) {
+            player0 = new Player(8000, currentUser);
+            player1 = new Player(8000, secondPlayer);
+        } else {
+            player1 = new Player(8000, currentUser);
+            player0 = new Player(8000, secondPlayer);
+        }
+        player0.draw();
         this.rounds = round;
         this.battleField = new BattleField();
+        currentPhase = Phases.DRAW;
     }
 
     public void select(int selectedAddress, SelectType selectType) {
@@ -100,12 +109,13 @@ public class Battle {
             if (monsterZone[i] == null) {
                 monsterZone[i] = selectedCard;
                 handCards.remove(selectedAddress);
+                break;
             }
         }
         selectedCard.setState(State.OFFENSIVE_OCCUPIED);
 
         hasSetOrSummon = true;
-
+        deselect();
     }
 
     private boolean hasCapacity(BattleCard[] zone) {
@@ -142,7 +152,32 @@ public class Battle {
     }
 
     public Phases nextPhase() {
-        return null;
+        switch (currentPhase) {
+            case DRAW:
+                currentPhase = Phases.STANDBY;
+                break;
+            case STANDBY:
+                currentPhase = Phases.MAIN_PHASE_1;
+                break;
+            case MAIN_PHASE_1:
+                currentPhase = Phases.BATTLE_PHASE;
+                break;
+            case BATTLE_PHASE:
+                currentPhase = Phases.MAIN_PHASE_2;
+                break;
+            case MAIN_PHASE_2:
+                currentPhase = Phases.END_PHASE;
+                break;
+            case END_PHASE:
+                currentPhase = Phases.DRAW;
+                turn++;
+                hasSetOrSummon = false;
+                if (!getCurrentPlayer().draw()) {
+                    winRound((turn + 1) % 2);
+                }
+                break;
+        }
+        return currentPhase;
     }
 
     public SelectType getSelectType() {
@@ -159,6 +194,7 @@ public class Battle {
             if (monsterOpponent[selectedAddress].getState() == State.DEFENSIVE_HIDDEN) {
                 throw new IllegalActionException("card is not visible");
             }
+            return monsterOpponent[selectedAddress];
         }
         if (selectType == SelectType.SELECT_SPELL) {
             BattleCard[] spellZone = battleField.getSpellZone(turn % 2);
@@ -169,6 +205,7 @@ public class Battle {
             if (spellOpponent[selectedAddress].getState() == State.HIDDEN) {
                 throw new IllegalActionException("card is not visible");
             }
+            return spellOpponent[selectedAddress];
         }
         if (selectType == SelectType.SELECT_FIELLD) {
             return battleField.getFieldZone(turn % 2);
@@ -192,7 +229,7 @@ public class Battle {
         if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
             throw new IllegalActionException("you can’t do this action in this phase");
         }
-        if (selectedCard.isHasStateChanged()){
+        if (selectedCard.isHasStateChanged()) {
             throw new IllegalActionException("you already changed this card position in this turn");
         }
         if (state.equals("attack") && selectedCard.getState() != State.DEFENSIVE_OCCUPIED) {
@@ -207,39 +244,114 @@ public class Battle {
         selectedCard.setHasStateChanged(true);
     }
 
-      public void setMonster() throws IllegalActionException {
-          if (selectType == null) {
-              throw new IllegalActionException("no card is selected yet");
-          }
-          if (selectType != SelectType.SELECT_HAND) {
-              throw new IllegalActionException("you can’t set this card");
-          }
+    public void setMonster() throws IllegalActionException {
+        if (selectType == null) {
+            throw new IllegalActionException("no card is selected yet");
+        }
+        if (selectType != SelectType.SELECT_HAND) {
+            throw new IllegalActionException("you can’t set this card");
+        }
 
-          if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
-              throw new IllegalActionException("you can’t do this action in this phase");
-          }
-          ArrayList<BattleCard> handCards = getCurrentPlayer().getHandCards();
-          BattleCard selectedCard = handCards.get(selectedAddress);
-          if (selectedCard.getCard().getType() != CardType.MONSTER) {
-              throw new IllegalActionException("you can’t set this card");
-          }
-          BattleCard[] monsterZone = battleField.getMonsterZone(turn % 2);
-          if (!hasCapacity(monsterZone)) {
-              throw new IllegalActionException("monster card zone is full");
-          }
-          if (hasSetOrSummon) {
-              throw new IllegalActionException("you already summoned/set on this turn");
-          }
+        if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
+            throw new IllegalActionException("you can’t do this action in this phase");
+        }
+        ArrayList<BattleCard> handCards = getCurrentPlayer().getHandCards();
+        BattleCard selectedCard = handCards.get(selectedAddress);
+        if (selectedCard.getCard().getType() != CardType.MONSTER) {
+            throw new IllegalActionException("you can’t set this card");
+        }
+        BattleCard[] monsterZone = battleField.getMonsterZone(turn % 2);
+        if (!hasCapacity(monsterZone)) {
+            throw new IllegalActionException("monster card zone is full");
+        }
+        if (hasSetOrSummon) {
+            throw new IllegalActionException("you already summoned/set on this turn");
+        }
 
-          for (int i = 0; i < 5; i++) {
-              if (monsterZone[i] == null) {
-                  monsterZone[i] = selectedCard;
-                  handCards.remove(selectedAddress);
-              }
+        for (int i = 0; i < 5; i++) {
+            if (monsterZone[i] == null) {
+                monsterZone[i] = selectedCard;
+                handCards.remove(selectedAddress);
+                break;
+            }
 
-          }
-          selectedCard.setState(State.DEFENSIVE_HIDDEN);
-          hasSetOrSummon = true;
+        }
+        selectedCard.setState(State.DEFENSIVE_HIDDEN);
+        hasSetOrSummon = true;
+        deselect();
+    }
 
-      }
+    public void setSpell() throws IllegalActionException {
+        if (selectType == null) {
+            throw new IllegalActionException("no card is selected yet");
+        }
+        if (selectType != SelectType.SELECT_HAND) {
+            throw new IllegalActionException("you can’t set this card");
+        }
+
+        if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
+            throw new IllegalActionException("you can’t do this action in this phase");
+        }
+        ArrayList<BattleCard> handCards = getCurrentPlayer().getHandCards();
+        BattleCard selectedCard = handCards.get(selectedAddress);
+        if (selectedCard.getCard().getType() != CardType.SPELL) {
+            throw new IllegalActionException("you can’t set this card");
+        }
+        BattleCard[] spellZone = battleField.getSpellZone(turn % 2);
+        if (!hasCapacity(spellZone)) {
+            throw new IllegalActionException("spell card zone is full");
+        }
+        if (hasSetOrSummon) {
+            throw new IllegalActionException("you already summoned/set on this turn");
+        }
+
+        for (int i = 0; i < 5; i++) {
+            if (spellZone[i] == null) {
+                spellZone[i] = selectedCard;
+                handCards.remove(selectedAddress);
+                break;
+            }
+
+        }
+        selectedCard.setState(State.HIDDEN);
+        hasSetOrSummon = true;
+        deselect();
+    }
+
+    public void setTrap() throws IllegalActionException {
+        if (selectType == null) {
+            throw new IllegalActionException("no card is selected yet");
+        }
+        if (selectType != SelectType.SELECT_HAND) {
+            throw new IllegalActionException("you can’t set this card");
+        }
+
+        if (currentPhase != Phases.MAIN_PHASE_1 && currentPhase != Phases.MAIN_PHASE_2) {
+            throw new IllegalActionException("you can’t do this action in this phase");
+        }
+        ArrayList<BattleCard> handCards = getCurrentPlayer().getHandCards();
+        BattleCard selectedCard = handCards.get(selectedAddress);
+        if (selectedCard.getCard().getType() != CardType.TRAP) {
+            throw new IllegalActionException("you can’t set this card");
+        }
+        BattleCard[] spellZone = battleField.getSpellZone(turn % 2);
+        if (!hasCapacity(spellZone)) {
+            throw new IllegalActionException("spell card zone is full");
+        }
+        if (hasSetOrSummon) {
+            throw new IllegalActionException("you already summoned/set on this turn");
+        }
+
+        for (int i = 0; i < 5; i++) {
+            if (spellZone[i] == null) {
+                spellZone[i] = selectedCard;
+                handCards.remove(selectedAddress);
+                break;
+            }
+
+        }
+        selectedCard.setState(State.HIDDEN);
+        hasSetOrSummon = true;
+        deselect();
+    }
 }

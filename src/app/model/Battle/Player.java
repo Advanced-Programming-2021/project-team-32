@@ -57,12 +57,13 @@ public class Player {
         this.LP += LP;
     }
 
-    public void draw () {
+    public boolean draw () {
         if (remainedCards.size() > 0 && handCards.size() < 6) {
             BattleCard battleCard = remainedCards.get(0);
             remainedCards.remove(0);
             handCards.add(battleCard);
-        }
+            return true;
+        } else return remainedCards.size() != 0 || handCards.size() != 0;
     }
 
     public int getMaxLPReward() {
